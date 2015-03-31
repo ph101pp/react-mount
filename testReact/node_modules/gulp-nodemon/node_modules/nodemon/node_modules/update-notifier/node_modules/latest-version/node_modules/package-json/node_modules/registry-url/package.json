@@ -1,0 +1,66 @@
+{
+  "name": "registry-url",
+  "version": "3.0.2",
+  "description": "Get the set npm registry URL",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sindresorhus/registry-url"
+  },
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "npm",
+    "conf",
+    "config",
+    "npmconf",
+    "registry",
+    "url",
+    "uri",
+    "scope"
+  ],
+  "dependencies": {
+    "rc": "^0.6.0"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "require-uncached": "^1.0.2"
+  },
+  "gitHead": "b686a04db404133e5effde42a1b9713689cee345",
+  "bugs": {
+    "url": "https://github.com/sindresorhus/registry-url/issues"
+  },
+  "homepage": "https://github.com/sindresorhus/registry-url",
+  "_id": "registry-url@3.0.2",
+  "_shasum": "c6892bbbc77143ec7252db1a49c77e0eb090f223",
+  "_from": "registry-url@^3.0.0",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "sindresorhus",
+    "email": "sindresorhus@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "sindresorhus",
+      "email": "sindresorhus@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "c6892bbbc77143ec7252db1a49c77e0eb090f223",
+    "tarball": "http://registry.npmjs.org/registry-url/-/registry-url-3.0.2.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/registry-url/-/registry-url-3.0.2.tgz"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "testRiot",
+  "version": "0.0.1",
+  "author": {
+    "name" : "Philipp Adrian",
+    "email" : "philipp.adrian@dowjones.com",
+    "company" : "Dow Jones & Co.",
+    "department" : "Newsroom Development"
+  },
+  "description": "Bonaparte - Test React",
+ 
+
+  "url":"http://localhost:8000",
+  "port": 8000,
+  
+  "scripts" : {},
+
+  "dependencies": {
+    "react" : "^0.13.1"
+  },
+
+  "devDependencies": {
+    "gulp": "^3.8.x",
+    "gulp-jshint": "^1.9.x",
+    "gulp-uglify" :"^1.0.x",
+    "gulp-rename" : "^1.2.x",
+    "gulp-nodemon" : "^1.0.x",
+    "gulp-json-editor": "^2.2.x",
+    "gulp-riot" : "^0.2.12",
+
+    "browserify": "^8.0.x",    
+    "browserify-shim": "^3.2.x",
+    "vinyl-transform": "^1.0.x",
+    "reactify" : "^1.1.0"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+
+  "private" : true,
+
+  "browserify": {
+    "transform": [
+      [ "reactify"]
+    ]
+  }
+}
