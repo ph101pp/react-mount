@@ -1,11 +1,6 @@
-var React = require("react");
-var ExampleApplication = require("./ExampleApplication.jsx");
+var mount = require("./react-mount.js");
 
-var start = new Date().getTime();
-
-setInterval(function() {
-  React.render(
-    <ExampleApplication elapsed={new Date().getTime() - start} />,
-    document.getElementById('container')
-  );
-}, 50);
+mount({
+  "Text" : require("./Text.jsx"),
+  "ExampleApplication" : require("./ExampleApplication.jsx")
+});
