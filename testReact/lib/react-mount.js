@@ -1,3 +1,16 @@
+/*
+  TODO:
+
+  - Allow Data binding with {…} and data object 
+  - replace elements:
+      <br>   ->   <br />
+      class  ->   className
+      for    ->   htmlFor
+
+    check: https://facebook.github.io/react/docs/tags-and-attributes.html
+
+*/
+
 var React = require("react");
 var ReactTools = require("react-tools");
 var objectKeys = Object.keys || objectKeysShim;

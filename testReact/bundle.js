@@ -4,7 +4,7 @@ var Text = require("./Text.jsx");
 module.exports = React.createClass({displayName: "exports",
 
   render: function() {
-    var message = "bye";
+    var message = "ExampleApplication:";
 
     return (
       React.createElement("div", null, 
@@ -22,7 +22,13 @@ var React = require("react");
 module.exports = React.createClass({displayName: "exports",
   render: function() {
    
-    return React.createElement("p", null, "Hello");
+    return (
+      React.createElement("div", null, 
+        this.props.children, 
+
+        React.createElement("p", null, React.createElement("br", null), "React ", React.createElement("b", null, "is"), " running.")
+      )
+    );
   }
 });
 
@@ -37,6 +43,19 @@ mount({
 
 
 },{"./ExampleApplication.jsx":1,"./Text.jsx":2,"./react-mount.js":4}],4:[function(require,module,exports){
+/*
+  TODO:
+
+  - Allow Data binding with {…} and data object 
+  - replace elements:
+      <br>   ->   <br />
+      class  ->   className
+      for    ->   htmlFor
+
+    check: https://facebook.github.io/react/docs/tags-and-attributes.html
+
+*/
+
 var React = require("react");
 var ReactTools = require("react-tools");
 var objectKeys = Object.keys || objectKeysShim;

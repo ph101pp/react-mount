@@ -3,7 +3,7 @@ var Text = require("./Text.jsx");
 module.exports = React.createClass({
 
   render: function() {
-    var message = "bye";
+    var message = "ExampleApplication:";
 
     return (
       <div>
