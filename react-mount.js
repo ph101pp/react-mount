@@ -2,13 +2,14 @@
   TODO:
 
   - Allow Data binding with {…} and data object 
-  - replace elements:
+  - Replace elements:
       <br>   ->   <br />
       class  ->   className
       for    ->   htmlFor
 
     check: https://facebook.github.io/react/docs/tags-and-attributes.html
-
+  - Allow webcomponent tag names <tag-with-dash>
+  
 */
 
 var React = require("react");
