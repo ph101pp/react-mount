@@ -11,7 +11,7 @@ var nodemon      = require('gulp-nodemon');
 
 ///////////////////////////////////////////////////////////////////////////////
 
-gulp.task("default", ["watch"]);
+gulp.task("default", ["scripts", "watch"]);
 gulp.task("scripts", scripts);
 gulp.task("watch", watch);
 
