@@ -3,10 +3,6 @@ var React = require("react");
 var Text = require("./Text.jsx");
 module.exports = React.createClass({displayName: "exports",
 
-
-
-
-
   render: function() {
     var message = "bye";
 
@@ -43,20 +39,16 @@ mount({
 },{"./ExampleApplication.jsx":1,"./Text.jsx":2,"./react-mount.js":4}],4:[function(require,module,exports){
 var React = require("react");
 var ReactTools = require("react-tools");
-var objectKeys = Object.keys || function(o){
-  var keys = [];
-  for(key in o) keys.push(key);
-  return keys;
-}
+var objectKeys = Object.keys || objectKeysShim;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-module.exports = Mount;
+module.exports = mount;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-function Mount(context, tags, data){
+function mount(context, tags, data){
   // Normalize Input
   if(!isDOMElement(context)){
     data = tags;
@@ -80,15 +72,15 @@ function mountTags(context, tags, data){
     return;
   };
 
-  //Mount all top-level child tags of context
-  var nodes, el, mount;
+  //Mount all top-level child tags within context
+  var nodes, el, mount, n;
   for(var i=0; i<keys.length; i++) {
     nodes = context.getElementsByTagName(keys[i]);
-    for(var n=0; n<nodes.length; n++) {
+    for(n=0; n<nodes.length; n++) {
       el = nodes[n];
       mount = true;
-      while (el = el.parentNode) {
-        if (keys.indexOf(el.nodeName) >= 0) {
+      while(el = el.parentNode) {
+        if(keys.indexOf(el.nodeName) >= 0) {
           mount = false;
           break;
         }
@@ -97,7 +89,7 @@ function mountTags(context, tags, data){
       if(mount) mountTag(nodes[n], tags, data);
     }
   }  
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -106,7 +98,7 @@ function mountTag(tag, tags, data) {
   var keys = objectKeys(tags);
 
   // remove comments  
-  str = str.replace(/<!--((\s*.*)*)-->/g," ");
+  str = str.replace(/<!--((\s*.*)*)-->/g,"");
 
   // replace all lowercase html tagnames with actual tagnames
   for(var i = 0; i<keys.length; i++) {
@@ -119,7 +111,8 @@ function mountTag(tag, tags, data) {
 
   // replace component variables (ComponentName) with corrected variables (tags.ComponentName)
   for(var i = 0; i<keys.length; i++) {
-    jsx = jsx.replace(new RegExp("createElement\\("+keys[i], "g"), "createElement(tags."+keys[i]); 
+    jsx = jsx
+      .replace(new RegExp("createElement\\("+keys[i], "g"), "createElement(tags."+keys[i]); 
   }
 
   // Render JSX and transform it into HTML
@@ -134,9 +127,18 @@ function mountTag(tag, tags, data) {
 
 function isDOMElement(o) {
   return (
-    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-    o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+    typeof HTMLElement === "object" ? 
+      o instanceof HTMLElement : //DOM2
+      o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
   );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+function objectKeysShim(o){
+  var keys = [];
+  for(key in o) keys.push(key);
+  return keys;
 }
 
 
