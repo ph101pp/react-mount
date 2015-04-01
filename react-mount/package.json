@@ -1,5 +1,5 @@
 {
-  "name": "testRiot",
+  "name": "react-mount",
   "version": "0.0.1",
   "author": {
     "name" : "Philipp Adrian",
@@ -7,13 +7,13 @@
     "company" : "Dow Jones & Co.",
     "department" : "Newsroom Development"
   },
-  "description": "Bonaparte - Test React",
- 
-
-  "url":"http://localhost:8000",
-  "port": 8000,
-  
-  "scripts" : {},
+  "description": "Enable React components within html like web components",
+  "keywords": [
+    "react",
+    "reactjs",
+    "mount",
+    "webcomponents"
+  ],
 
   "dependencies": {
     "react" : "^0.13.1",
@@ -25,9 +25,6 @@
     "gulp-jshint": "^1.9.x",
     "gulp-uglify" :"^1.0.x",
     "gulp-rename" : "^1.2.x",
-    "gulp-nodemon" : "^1.0.x",
-    "gulp-json-editor": "^2.2.x",
-    "gulp-riot" : "^0.2.12",
 
     "browserify": "^8.0.x",    
     "browserify-shim": "^3.2.x",
@@ -38,7 +35,7 @@
     "node": "0.12.x"
   },
 
-  "private" : true,
+  "private" : false,
 
   "browserify": {
     "transform": [
