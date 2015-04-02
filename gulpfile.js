@@ -24,14 +24,16 @@ function browserify(){
 ///////////////////////////////////////////////////////////////////////////////
 
 function scripts(){
-  gulp.src("examples/**/app.jsx")
+  gulp.src("./examples/**/app.jsx")
     .pipe(browserify())
-    .pipe(rename(function(path){
-      path.dirname+="/../";
-      path.basename="bundle";
-      path.extname=".js";
-    }))
-    .pipe(gulp.dest("examples"));
+    .pipe(rename("bundle.js"))
+    // .pipe(rename(function(path){
+    //   console.log(path);
+    //   path.dirname+="/../";
+    //   path.basename="bundle";
+    //   path.extname=".js";
+    // }))
+    .pipe(gulp.dest("./examples"));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -38,7 +38,7 @@ var mount = require("../../../react-mount.js");
 
 mount({
   "Text" : require("./Text.jsx"),
-  "ExampleApplication" : require("./ExampleApplication.jsx")
+  "example-application" : require("./ExampleApplication.jsx")
 });
 
 },{"../../../react-mount.js":199,"./ExampleApplication.jsx":1,"./Text.jsx":2}],4:[function(require,module,exports){
@@ -35280,13 +35280,12 @@ module.exports = require('./lib/React');
   TODO:
 
   - Allow Data binding with {…} and data object 
-  - replace elements:
+  - Replace elements:
       <br>   ->   <br />
       class  ->   className
       for    ->   htmlFor
 
-    check: https://facebook.github.io/react/docs/tags-and-attributes.html
-
+    check: https://facebook.github.io/react/docs/tags-and-attributes.html  
 */
 
 var React = require("react");
@@ -35352,19 +35351,23 @@ function mountTag(tag, tags, data) {
   // remove comments  
   str = str.replace(/<!--((\s*.*)*)-->/g,"");
 
-  // replace all lowercase html tagnames with actual tagnames
+  // replace all lowercase html tagnames to all uppercase tags 
+  var key, reactTags = {}, reactKeys=[];
   for(var i = 0; i<keys.length; i++) {
+    key = keys[i].toUpperCase().replace("-", "_");
+    reactTags[key] = tags[keys[i]];
+    reactKeys.push(key);
     str = str
-      .replace(new RegExp("\<\s*"+keys[i], "ig"), "<"+keys[i])
-      .replace(new RegExp("\<\s*\/\s*"+keys[i], "ig"), "</"+keys[i]);
+      .replace(new RegExp("\<\s*"+keys[i], "ig"), "<"+key)
+      .replace(new RegExp("\<\s*\/\s*"+keys[i], "ig"), "</"+key);
   }
-
+  
   var jsx = ReactTools.transform(str);
 
-  // replace component variables (ComponentName) with corrected variables (tags.ComponentName)
-  for(var i = 0; i<keys.length; i++) {
+  // replace component variables (ComponentName) with corrected variables (reactTags.ComponentName)
+  for(var i = 0; i<reactKeys.length; i++) {
     jsx = jsx
-      .replace(new RegExp("createElement\\("+keys[i], "g"), "createElement(tags."+keys[i]); 
+      .replace(new RegExp("createElement\\("+reactKeys[i], "g"), "createElement(reactTags."+reactKeys[i]); 
   }
 
   // Render JSX and transform it into HTML
