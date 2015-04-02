@@ -1,18 +1,22 @@
+(function(module, require, window, document, undefined){
 /*
   TODO:
 
   - Allow Data binding with {…} and data object 
+  - Transform style string to object
 
-    check: https://facebook.github.io/react/docs/tags-and-attributes.html  
 */
-var React = require("react");
-var ReactTools = require("react-tools");
+var require = require || requireShim;
+var React = window.React || require("react");
+var ReactTools = window.JSXTransformer || require("react-tools");
 var objectKeys = Object.keys || objectKeysShim;
 var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
 
 ///////////////////////////////////////////////////////////////////////////////
 
 module.exports = mount;
+if(typeof window.React ==="object") window.React.mount = mount;
+if(typeof define === "function" && define.amd) define(function(){return mount});
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -99,8 +103,6 @@ function mountTag(tag, tags, data) {
       .replace(new RegExp("createElement\\("+reactKeys[i], "g"), "createElement(reactTags."+reactKeys[i]); 
   }
 
-  console.log(jsx);
-
   // Render JSX and transform it into HTML
   var tempElement = document.createElement('div');
   tempElement.innerHTML = React.renderToString(eval(jsx));
@@ -126,3 +128,11 @@ function objectKeysShim(o){
   for(key in o) keys.push(key);
   return keys;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+function requireShim(required){
+  throw "react-mount: Error – React and JSXTransformer/react-tools are required for react-mount to work";
+}
+
+})(module || {}, require, window, document);
