@@ -75,9 +75,9 @@ function mountTag(tag, tags, data) {
     // remove comments  
     .replace(/<!--((\s|.)*)-->/g,"")
     // class attribute to className
-    .replace(/(<(?:[^>"']|".*"|'.*')*)class((?:[^>"']|".*"|'.*')*>)/g, "$1"+"className"+"$2")
+    .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/g, "$1"+"className"+"$2")
     // for attribute to htmlFor
-    .replace(/(<(?:[^>"']|".*"|'.*')*)for((?:[^>"']|".*"|'.*')*>)/g, "$1"+"htmlFor"+"$2");
+    .replace(/(<(?:[^>"']|".*"|'.*')*)for(\s*=(?:[^>"']|".*"|'.*')*>)/g, "$1"+"htmlFor"+"$2");
 
   // "selfclose" self closing tags: ">" to "/>"
   for(var k=0; k<selfClosingTags.length; k++) {
