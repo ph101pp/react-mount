@@ -2,17 +2,13 @@
   TODO:
 
   - Allow Data binding with {…} and data object 
-  - Replace elements:
-      <br>   ->   <br />
-      class  ->   className
-      for    ->   htmlFor
 
     check: https://facebook.github.io/react/docs/tags-and-attributes.html  
 */
-
 var React = require("react");
 var ReactTools = require("react-tools");
 var objectKeys = Object.keys || objectKeysShim;
+var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -70,10 +66,21 @@ function mountTag(tag, tags, data) {
   var str = tag.outerHTML;
   var keys = objectKeys(tags);
 
-  // remove comments  
-  str = str.replace(/<!--((\s*.*)*)-->/g,"");
+  // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
+  str = str
+    // remove comments  
+    .replace(/<!--((\s|.)*)-->/g,"")
+    // class attribute to className
+    .replace(/(<(?:[^>"']|".*"|'.*')*)class((?:[^>"']|".*"|'.*')*>)/g, "$1"+"className"+"$2")
+    // for attribute to htmlFor
+    .replace(/(<(?:[^>"']|".*"|'.*')*)for((?:[^>"']|".*"|'.*')*>)/g, "$1"+"htmlFor"+"$2");
 
-  // replace all lowercase html tagnames to all uppercase tags 
+  // "selfclose" self closing tags: ">" to "/>"
+  for(var k=0; k<selfClosingTags.length; k++) {
+    str = str.replace(new RegExp("(<"+selfClosingTags[k]+"(?:[^>\"']|\".*\"|'.*')*)\/?>","ig"),"$1"+" />");
+  }
+ 
+  // all lowercase html tagnames to all uppercase tagnames
   var key, reactTags = {}, reactKeys=[];
   for(var i = 0; i<keys.length; i++) {
     key = keys[i].toUpperCase().replace("-", "_");
@@ -91,6 +98,8 @@ function mountTag(tag, tags, data) {
     jsx = jsx
       .replace(new RegExp("createElement\\("+reactKeys[i], "g"), "createElement(reactTags."+reactKeys[i]); 
   }
+
+  console.log(jsx);
 
   // Render JSX and transform it into HTML
   var tempElement = document.createElement('div');

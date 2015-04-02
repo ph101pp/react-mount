@@ -17,17 +17,21 @@
     <h1 id="hello" class="hello">Basic Example with Precompiled JSX</h1>
     <header>
       <div>
-        <example-application>
-          <p>
+        <example-application test="{method}" blalb="{madd}">
+          <p class="test">
             If you can see this, React is not running. Try running:
           </p>
-          <pre>npm install -g react-tools cd examples/basic-jsx-precompile/ jsx . build/</pre>
+          <pre test= "">npm install -g react-tools cd examples/basic-jsx-precompile/ jsx . build/</pre>
           <Text></Text>
+          <!--
+          test
+          -->
+          <img src="http://placekitten.com/g/200/300">
         </example-application>
       </div>
     </header>
 
-    <Text><p><b>I repeat:</b></p></Text>
+    <Text><p>test<br><br><b>I repeat:</b></p></Text>
     <h4>Example Details</h4>
     <p>This is written with JSX in a separate file and precompiled to vanilla JS by running:</p>
     <pre>npm install -g react-tools cd examples/basic-jsx-precompile/ jsx . build/</pre>
