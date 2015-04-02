@@ -6,16 +6,17 @@
   - Transform style string to object
 
 */
-var require = require || requireShim;
+require = require || requireShim;
 var React = window.React || require("react");
 var ReactTools = window.JSXTransformer || require("react-tools");
 var objectKeys = Object.keys || objectKeysShim;
 var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
 
 ///////////////////////////////////////////////////////////////////////////////
+// Export / Attach / Public
 
 module.exports = mount;
-if(typeof window.React ==="object") window.React.mount = mount;
+if(typeof window.React === "object") window.React.mount = mount;
 if(typeof define === "function" && define.amd) define(function(){return mount});
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -135,4 +136,4 @@ function requireShim(required){
   throw "react-mount: Error – React and JSXTransformer/react-tools are required for react-mount to work";
 }
 
-})(module || {}, require, window, document);
+})(typeof module === "object" ? module : {}, typeof require === "function" ? require : undefined, window, document);
