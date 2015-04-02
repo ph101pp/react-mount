@@ -35276,21 +35276,27 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":71}],199:[function(require,module,exports){
+(function(module, require, window, document, undefined){
+"use strict";
 /*
   TODO:
 
   - Allow Data binding with {…} and data object 
+  - Transform style string to object
 
-    check: https://facebook.github.io/react/docs/tags-and-attributes.html  
 */
-var React = require("react");
-var ReactTools = require("react-tools");
+require = require || requireShim;
+var React = window.React || require("react");
+var ReactTools = window.JSXTransformer || require("react-tools");
 var objectKeys = Object.keys || objectKeysShim;
 var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
 
 ///////////////////////////////////////////////////////////////////////////////
+// Export / Attach / Public
 
 module.exports = mount;
+if(typeof window.React === "object") window.React.mount = mount;
+if(typeof define === "function" && define.amd) define(function(){return mount});
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -35349,9 +35355,9 @@ function mountTag(tag, tags, data) {
     // remove comments  
     .replace(/<!--((\s|.)*)-->/g,"")
     // class attribute to className
-    .replace(/(<(?:[^>"']|".*"|'.*')*)class((?:[^>"']|".*"|'.*')*>)/g, "$1"+"className"+"$2")
+    .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/g, "$1"+"className"+"$2")
     // for attribute to htmlFor
-    .replace(/(<(?:[^>"']|".*"|'.*')*)for((?:[^>"']|".*"|'.*')*>)/g, "$1"+"htmlFor"+"$2");
+    .replace(/(<(?:[^>"']|".*"|'.*')*)for(\s*=(?:[^>"']|".*"|'.*')*>)/g, "$1"+"htmlFor"+"$2");
 
   // "selfclose" self closing tags: ">" to "/>"
   for(var k=0; k<selfClosingTags.length; k++) {
@@ -35376,8 +35382,6 @@ function mountTag(tag, tags, data) {
     jsx = jsx
       .replace(new RegExp("createElement\\("+reactKeys[i], "g"), "createElement(reactTags."+reactKeys[i]); 
   }
-
-  console.log(jsx);
 
   // Render JSX and transform it into HTML
   var tempElement = document.createElement('div');
@@ -35404,6 +35408,14 @@ function objectKeysShim(o){
   for(key in o) keys.push(key);
   return keys;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+function requireShim(required){
+  throw "react-mount: Error – React and JSXTransformer/react-tools are required for react-mount to work";
+}
+
+})(typeof module === "object" ? module : {}, typeof require === "function" ? require : undefined, window, document);
 
 
 },{"react":198,"react-tools":10}]},{},[3]);

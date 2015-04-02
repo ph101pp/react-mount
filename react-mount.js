@@ -1,4 +1,5 @@
 (function(module, require, window, document, undefined){
+"use strict";
 /*
   TODO:
 
