@@ -35282,7 +35282,6 @@ module.exports = require('./lib/React');
   TODO:
 
   - Allow Data binding with {…} and data object 
-  - Transform style string to object
 
 */
 require = require || requireShim;
@@ -35300,6 +35299,60 @@ if(typeof define === "function" && define.amd) define(function(){return mount});
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
+
+function HTMLtoJSX(str){
+  str = str
+    // remove comments  
+    .replace(/<!--((\s|.)*)-->/g,"")
+    // class attribute to className
+    .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
+    // for attribute to htmlFor
+    .replace(/(<(?:[^>"']|".*"|'.*')*)for(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"htmlFor"+"$2");
+
+  // "selfclose" self closing tags: "…>" to "…/>"
+  for(var k=0; k<selfClosingTags.length; k++) {
+    str = str.replace(new RegExp("(<"+selfClosingTags[k]+"(?:[^>\"']|\".*\"|'.*')*)\/?>","ig"),"$1"+" />");
+  }
+
+  // Transform style attribute string ("color:red; background-image:url()") to object ({{color:'red', backgroundImage:'url()'}})
+  str = str.replace(/(<(?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^"]|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
+    var styles = {};
+    style
+      .slice(1,-1)
+      .replace(/&quot;/g,'"')
+      .replace(/'/g,'"')
+      .replace(/\s*([^:;]*)\s*:\s*((?:[^;"]|".*")*)\s*;?/g, function(match, key, value){
+
+        // transform key to camelCase
+        key = key.replace(/-([^-]*)/g, function(match, part){
+          if(part === "ms") return part;
+          return part.charAt(0).toUpperCase()+part.slice(1);
+        });
+
+        styles[key]=value;
+        return match;
+      });
+
+    var str="";
+    for(style in styles) str+=style+":'"+styles[style]+"',";
+    return start+"{{"+str.slice(0,-1)+"}}"+end;
+  });
+
+  return str;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+function isDOMElement(o) {
+  return (
+    typeof HTMLElement === "object" ? 
+      o instanceof HTMLElement : //DOM2
+      o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+  );
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 function mount(context, tags, data){
   // Normalize Input
@@ -35310,6 +35363,41 @@ function mount(context, tags, data){
   }
   mountTags(context, tags, data || {});
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+function mountTag(tag, tags, data) {
+  var str = tag.outerHTML;
+  var keys = objectKeys(tags);
+
+  var jsx = HTMLtoJSX(str);
+ 
+  // transform tagnames to all uppercase
+  var key, reactTags = {}, reactKeys=[];
+  for(var i = 0; i<keys.length; i++) {
+    key = keys[i].toUpperCase().replace("-", "_");
+    reactTags[key] = tags[keys[i]];
+    reactKeys.push(key);
+    jsx = jsx
+      .replace(new RegExp("<"+keys[i], "ig"), "<"+key)
+      .replace(new RegExp("<\/"+keys[i], "ig"), "</"+key);
+  }
+  
+  var component = ReactTools.transform(jsx);
+
+  // replace component variables (ComponentName) with corrected variables (reactTags.ComponentName)
+  for(var i = 0; i<reactKeys.length; i++) {
+    component = component
+      .replace(new RegExp("createElement\\("+reactKeys[i],"g"), "createElement(reactTags."+reactKeys[i]); 
+  }
+
+  // Render JSX and transform it into HTML
+  var tempElement = document.createElement('div');
+  tempElement.innerHTML = React.renderToString(eval(component));
+  
+  // Replace tag with rendered HTML
+  tag.parentNode.replaceChild(tempElement.childNodes[0], tag);
+} 
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -35342,63 +35430,6 @@ function mountTags(context, tags, data){
       if(mount) mountTag(nodes[n], tags, data);
     }
   }  
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-function mountTag(tag, tags, data) {
-  var str = tag.outerHTML;
-  var keys = objectKeys(tags);
-
-  // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
-  str = str
-    // remove comments  
-    .replace(/<!--((\s|.)*)-->/g,"")
-    // class attribute to className
-    .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/g, "$1"+"className"+"$2")
-    // for attribute to htmlFor
-    .replace(/(<(?:[^>"']|".*"|'.*')*)for(\s*=(?:[^>"']|".*"|'.*')*>)/g, "$1"+"htmlFor"+"$2");
-
-  // "selfclose" self closing tags: ">" to "/>"
-  for(var k=0; k<selfClosingTags.length; k++) {
-    str = str.replace(new RegExp("(<"+selfClosingTags[k]+"(?:[^>\"']|\".*\"|'.*')*)\/?>","ig"),"$1"+" />");
-  }
- 
-  // all lowercase html tagnames to all uppercase tagnames
-  var key, reactTags = {}, reactKeys=[];
-  for(var i = 0; i<keys.length; i++) {
-    key = keys[i].toUpperCase().replace("-", "_");
-    reactTags[key] = tags[keys[i]];
-    reactKeys.push(key);
-    str = str
-      .replace(new RegExp("\<\s*"+keys[i], "ig"), "<"+key)
-      .replace(new RegExp("\<\s*\/\s*"+keys[i], "ig"), "</"+key);
-  }
-  
-  var jsx = ReactTools.transform(str);
-
-  // replace component variables (ComponentName) with corrected variables (reactTags.ComponentName)
-  for(var i = 0; i<reactKeys.length; i++) {
-    jsx = jsx
-      .replace(new RegExp("createElement\\("+reactKeys[i], "g"), "createElement(reactTags."+reactKeys[i]); 
-  }
-
-  // Render JSX and transform it into HTML
-  var tempElement = document.createElement('div');
-  tempElement.innerHTML = React.renderToString(eval(jsx));
-  
-  // Replace tag with rendered HTML
-  tag.parentNode.replaceChild(tempElement.childNodes[0], tag);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-function isDOMElement(o) {
-  return (
-    typeof HTMLElement === "object" ? 
-      o instanceof HTMLElement : //DOM2
-      o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
-  );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
