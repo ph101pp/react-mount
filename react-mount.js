@@ -20,8 +20,11 @@ if(typeof define === "function" && define.amd) define(function(){return mount});
 
 function HTMLtoJSX(str){
   str = str
-    // remove comments  
-    .replace(/<!--((\s|.)*)-->/g,"")
+    // transform html comments to js comments  
+    .replace(/<!--((?:\s|.)*)-->/g,"")
+    // .replace(/<!--/g,"{{\\*")
+    // .replace(/-->/g,"*\\}}")
+
     // class attribute to className
     .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
     // for attribute to htmlFor
@@ -37,8 +40,7 @@ function HTMLtoJSX(str){
     var styles = {};
     style
       .slice(1,-1)
-      .replace(/&quot;/g,'"')
-      .replace(/'/g,'"')
+      .replace(/(&quot)|'/g,'"')
       .replace(/\s*([^:;]*)\s*:\s*((?:[^;"]|".*")*)\s*;?/g, function(match, key, value){
 
         // transform key to camelCase
@@ -100,11 +102,12 @@ function mountTag(tag, tags, data) {
     reactTags[key] = tags[keys[i]];
     reactKeys.push(key);
     str = str
-      .replace(new RegExp("<"+keys[i], "ig"), "<"+key)
-      .replace(new RegExp("<\/"+keys[i], "ig"), "</"+key);
+      .replace(new RegExp("(<\/?)"+keys[i], "ig"), "$1"+key)
   }
 
   var jsx = HTMLtoJSX(str);
+
+  // console.log(jsx);
 
   // replace data variables (key) with corrected variables (data['key'])
   for(key in data) {
@@ -174,7 +177,7 @@ function objectKeysShim(o){
 ///////////////////////////////////////////////////////////////////////////////
 
 function requireShim(required){
-  throw "react-mount: Error – React and JSXTransformer/react-tools are required for react-mount to work";
+  throw "react-mount: Error - React and JSXTransformer/react-tools are required for react-mount to work";
 }
 
 })(typeof module === "object" ? module : {}, typeof require === "function" ? require : undefined, window, document);

@@ -4,6 +4,6 @@ mount({
   "Text" : require("./Text.jsx"),
   "example-application" : require("./ExampleApplication.jsx")
 }, {
-	method:"hello",
-	add:"philipp"
+  "method":"hello",
+  "add":"philipp"
 });
