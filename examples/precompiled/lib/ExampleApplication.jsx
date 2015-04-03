@@ -7,7 +7,7 @@ module.exports = React.createClass({
 
     return (
       <div>
-        <p>{message}</p>
+        <p>{this.props.test} {this.props.bla}</p>
         {this.props.children}
       </div>
     ); 

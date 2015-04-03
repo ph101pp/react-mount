@@ -1,11 +1,6 @@
 (function(module, require, window, document, undefined){
 "use strict";
-/*
-  TODO:
 
-  - Allow Data binding with {…} and data object 
-
-*/
 require = require || requireShim;
 var React = window.React || require("react");
 var ReactTools = window.JSXTransformer || require("react-tools");
@@ -61,6 +56,12 @@ function HTMLtoJSX(str){
     return start+"{{"+str.slice(0,-1)+"}}"+end;
   });
 
+  // Remove auto-quotes around {expressions}
+  str = str
+    .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
+      return match.replace(/(?:"|')(\{.*?\})(?:"|')/g,"$1");
+    });
+
   return str;
 }
 
@@ -92,27 +93,35 @@ function mountTag(tag, tags, data) {
   var str = tag.outerHTML;
   var keys = objectKeys(tags);
 
-  var jsx = HTMLtoJSX(str);
- 
-  // transform tagnames to all uppercase
+  // transform tagnames to random strings starting with "A" (Aj4awwubx1or);
   var key, reactTags = {}, reactKeys=[];
   for(var i = 0; i<keys.length; i++) {
-    key = keys[i].toUpperCase().replace("-", "_");
+    key = "A"+Math.random().toString(36).substring(2)+Math.random().toString(36).substring(2);
     reactTags[key] = tags[keys[i]];
     reactKeys.push(key);
-    jsx = jsx
+    str = str
       .replace(new RegExp("<"+keys[i], "ig"), "<"+key)
       .replace(new RegExp("<\/"+keys[i], "ig"), "</"+key);
   }
-  
-  var component = ReactTools.transform(jsx);
 
-  // replace component variables (ComponentName) with corrected variables (reactTags.ComponentName)
-  for(var i = 0; i<reactKeys.length; i++) {
-    component = component
-      .replace(new RegExp("createElement\\("+reactKeys[i],"g"), "createElement(reactTags."+reactKeys[i]); 
+  var jsx = HTMLtoJSX(str);
+
+  // replace data variables (key) with corrected variables (data['key'])
+  for(key in data) {
+    jsx = jsx
+      .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
+        return match.replace(new RegExp("=(\{"+key+"\})","g"),"={data['"+key+"']}");
+      });
   }
 
+  var component = ReactTools.transform(jsx);
+
+  // replace component variables (ComponentName) with corrected variables (reactTags['ComponentName'])
+  for(var i = 0; i<reactKeys.length; i++) {
+    component = component
+      .replace(new RegExp(reactKeys[i],"g"), "reactTags['"+reactKeys[i]+"']"); 
+  }
+  
   // Render JSX and transform it into HTML
   var tempElement = document.createElement('div');
   tempElement.innerHTML = React.renderToString(eval(component));
