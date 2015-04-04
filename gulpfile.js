@@ -24,7 +24,7 @@ function browserify(){
 ///////////////////////////////////////////////////////////////////////////////
 
 function scripts(){
-  gulp.src("./examples/**/app.jsx")
+  gulp.src("./test/**/app.jsx")
     .pipe(browserify())
     .pipe(rename("bundle.js"))
     // .pipe(rename(function(path){
@@ -33,12 +33,12 @@ function scripts(){
     //   path.basename="bundle";
     //   path.extname=".js";
     // }))
-    .pipe(gulp.dest("./examples"));
+    .pipe(gulp.dest("./test"));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 function watch(){
-  gulp.watch(["./examples/**/*.jsx", "./react-mount.js"], ['scripts']);
+  gulp.watch(["./test/**/*.jsx", "./react-mount.js"], ['scripts']);
 }
 

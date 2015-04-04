@@ -35299,13 +35299,10 @@ if(typeof define === "function" && define.amd) define(function(){return mount});
 ///////////////////////////////////////////////////////////////////////////////
 // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
 
-function HTMLtoJSX(str){
+function htmlToJsx(str){
   str = str
-    // transform html comments to js comments  
-    .replace(/<!--((?:\s|.)*)-->/g,"")
-    // .replace(/<!--/g,"{{\\*")
-    // .replace(/-->/g,"*\\}}")
-
+    // remove html comments.. doesn't work in safari.. wtf
+    //.replace(/<!--((?:\s|.)*)-->/g,"")
     // class attribute to className
     .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
     // for attribute to htmlFor
@@ -35316,9 +35313,15 @@ function HTMLtoJSX(str){
     str = str.replace(new RegExp("(<"+selfClosingTags[k]+"(?:[^>\"']|\".*\"|'.*')*)\/?>","ig"),"$1"+" />");
   }
 
+  // Remove auto-quotes around {expressions}
+  str = str
+    .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
+      return match.replace(/(?:"|')(\{.*?\})(?:"|')/g,"$1");
+    });
+
   // Transform style attribute string ("color:red; background-image:url()") to object ({{color:'red', backgroundImage:'url()'}})
-  str = str.replace(/(<(?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^"]|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
-    var styles = {};
+  str = str.replace(/(<(?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
+    var styles = "";
     style
       .slice(1,-1)
       .replace(/(&quot)|'/g,'"')
@@ -35330,20 +35333,13 @@ function HTMLtoJSX(str){
           return part.charAt(0).toUpperCase()+part.slice(1);
         });
 
-        styles[key]=value;
+        styles+=key+":'"+value+"',";
+        
         return match;
       });
 
-    var str="";
-    for(style in styles) str+=style+":'"+styles[style]+"',";
-    return start+"{{"+str.slice(0,-1)+"}}"+end;
+    return start+"{{"+styles.slice(0,-1)+"}}"+end;
   });
-
-  // Remove auto-quotes around {expressions}
-  str = str
-    .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
-      return match.replace(/(?:"|')(\{.*?\})(?:"|')/g,"$1");
-    });
 
   return str;
 }
@@ -35386,9 +35382,10 @@ function mountTag(tag, tags, data) {
       .replace(new RegExp("(<\/?)"+keys[i], "ig"), "$1"+key)
   }
 
-  var jsx = HTMLtoJSX(str);
+  // remove/disable comments
+  str = str.replace(/<!--|-->/g,"");
 
-  // console.log(jsx);
+  var jsx = htmlToJsx(str);
 
   // replace data variables (key) with corrected variables (data['key'])
   for(key in data) {
@@ -35460,6 +35457,8 @@ function objectKeysShim(o){
 function requireShim(required){
   throw "react-mount: Error - React and JSXTransformer/react-tools are required for react-mount to work";
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 })(typeof module === "object" ? module : {}, typeof require === "function" ? require : undefined, window, document);
 
