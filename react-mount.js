@@ -18,13 +18,10 @@ if(typeof define === "function" && define.amd) define(function(){return mount});
 ///////////////////////////////////////////////////////////////////////////////
 // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
 
-function HTMLtoJSX(str){
+function htmlToJsx(str){
   str = str
-    // transform html comments to js comments  
-    .replace(/<!--((?:\s|.)*)-->/g,"")
-    // .replace(/<!--/g,"{{\\*")
-    // .replace(/-->/g,"*\\}}")
-
+    // remove html comments.. doesn't work in safari.. wtf
+    //.replace(/<!--((?:\s|.)*)-->/g,"")
     // class attribute to className
     .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
     // for attribute to htmlFor
@@ -104,9 +101,10 @@ function mountTag(tag, tags, data) {
       .replace(new RegExp("(<\/?)"+keys[i], "ig"), "$1"+key)
   }
 
-  var jsx = HTMLtoJSX(str);
+  // remove/disable comments
+  str = str.replace(/<!--|-->/g,"");
 
-  // console.log(jsx);
+  var jsx = htmlToJsx(str);
 
   // replace data variables (key) with corrected variables (data['key'])
   for(key in data) {
