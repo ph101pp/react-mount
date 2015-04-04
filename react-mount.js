@@ -35,9 +35,15 @@ function HTMLtoJSX(str){
     str = str.replace(new RegExp("(<"+selfClosingTags[k]+"(?:[^>\"']|\".*\"|'.*')*)\/?>","ig"),"$1"+" />");
   }
 
+  // Remove auto-quotes around {expressions}
+  str = str
+    .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
+      return match.replace(/(?:"|')(\{.*?\})(?:"|')/g,"$1");
+    });
+
   // Transform style attribute string ("color:red; background-image:url()") to object ({{color:'red', backgroundImage:'url()'}})
-  str = str.replace(/(<(?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^"]|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
-    var styles = {};
+  str = str.replace(/(<(?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
+    var styles = "";
     style
       .slice(1,-1)
       .replace(/(&quot)|'/g,'"')
@@ -49,20 +55,13 @@ function HTMLtoJSX(str){
           return part.charAt(0).toUpperCase()+part.slice(1);
         });
 
-        styles[key]=value;
+        styles+=key+":'"+value+"',";
+        
         return match;
       });
 
-    var str="";
-    for(style in styles) str+=style+":'"+styles[style]+"',";
-    return start+"{{"+str.slice(0,-1)+"}}"+end;
+    return start+"{{"+styles.slice(0,-1)+"}}"+end;
   });
-
-  // Remove auto-quotes around {expressions}
-  str = str
-    .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
-      return match.replace(/(?:"|')(\{.*?\})(?:"|')/g,"$1");
-    });
 
   return str;
 }
