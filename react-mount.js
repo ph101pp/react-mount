@@ -3,7 +3,7 @@
 
 require = require || requireShim;
 var React = window.React || require("react");
-var ReactTools = window.JSXTransformer || require("react-tools");
+var ReactTransform = window.JSXTransformer ? window.JSXTransformer.transform : require("react-tools").transformWithDetails;
 var objectKeys = Object.keys || objectKeysShim;
 var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
 
@@ -113,9 +113,9 @@ function mountTag(tag, tags, data) {
         return match.replace(new RegExp("=(\{"+key+"\})","g"),"={data['"+key+"']}");
       });
   }
-
-  var component = ReactTools.transform(jsx);
-
+  
+  var component = ReactTransform(jsx).code;
+  
   // replace component variables (ComponentName) with corrected variables (reactTags['ComponentName'])
   for(var i = 0; i<reactKeys.length; i++) {
     component = component
@@ -176,5 +176,7 @@ function objectKeysShim(o){
 function requireShim(required){
   throw "react-mount: Error - React and JSXTransformer/react-tools are required for react-mount to work";
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 })(typeof module === "object" ? module : {}, typeof require === "function" ? require : undefined, window, document);
