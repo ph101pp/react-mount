@@ -1,0 +1,44 @@
+{
+  "name": "react-mount",
+  "version": "0.0.1",
+  "author": {
+    "name" : "Philipp Adrian",
+    "email" : "hello@philippadrian.com",
+    "website" : "philippadrian.com"
+  },
+  "description": "Enable React components within html like web components",
+  "keywords": [
+    "react",
+    "reactjs",
+    "mount",
+    "webcomponents"
+  ],
+
+  "dependencies": {
+    "react" : "^0.13.1",
+    "react-tools" : "^0.13.1" 
+  },
+
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.9.x",
+    "gulp-uglify" :"^1.0.x",
+    "gulp-rename" : "^1.2.x",
+
+    "browserify": "^8.0.x",
+    "browserify-shim": "^3.2.x",
+    "vinyl-transform": "^1.0.x",
+    "reactify" : "^1.1.0"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+
+  "private" : false,
+
+  "browserify": {
+    "transform": [
+      [ "reactify"]
+    ]
+  }
+}
