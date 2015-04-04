@@ -75,19 +75,19 @@ function isDOMElement(o) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function mount(context, tags, data){
+function mount(context, tags, props){
   // Normalize Input
   if(!isDOMElement(context)){
-    data = tags;
+    props = tags;
     tags = context;
     context =  document.body;
   }
-  mountTags(context, tags, data || {});
+  mountTags(context, tags, props || {});
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function mountTag(tag, tags, data) {
+function mountTag(tag, tags, props) {
   var str = tag.outerHTML;
   var keys = objectKeys(tags);
 
@@ -106,10 +106,10 @@ function mountTag(tag, tags, data) {
 
   var jsx = htmlToJsx(str);
 
-  // replace data variables {key} with corrected variables {data['key']}
-  for(key in data) {
+  // replace props variables {key} with corrected variables {props['key']}
+  for(key in props) {
     jsx = jsx
-      .replace(new RegExp("(\{"+key+"\})","g"),"{data['"+key+"']}");
+      .replace(new RegExp("(\{"+key+"\})","g"),"{props['"+key+"']}");
   }
   
   var component = ReactTransform(jsx).code;
@@ -130,7 +130,7 @@ function mountTag(tag, tags, data) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function mountTags(context, tags, data){
+function mountTags(context, tags, props){
   var keys = objectKeys(tags);
 
   // keys to uppercase to compare to nodeName
@@ -138,7 +138,7 @@ function mountTags(context, tags, data){
 
   // if context is tag
   if(keys.indexOf(context.nodeName) >= 0) {
-    mountTag(context, tags, data);
+    mountTag(context, tags, props);
     return;
   };
 
@@ -156,7 +156,7 @@ function mountTags(context, tags, data){
         }
         if(el === context) break;
       }
-      if(mount) mountTag(nodes[n], tags, data);
+      if(mount) mountTag(nodes[n], tags, props);
     }
   }  
 }
