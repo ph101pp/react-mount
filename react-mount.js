@@ -39,7 +39,7 @@ function htmlToJsx(str){
     });
 
   // Transform style attribute string ("color:red; background-image:url()") to object ({{color:'red', backgroundImage:'url()'}})
-  str = str.replace(/(<(?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
+  str = str.replace(/(<[A-Z](?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
     var styles = "";
     style
       .slice(1,-1)
@@ -91,10 +91,10 @@ function mountTag(tag, tags, data) {
   var str = tag.outerHTML;
   var keys = objectKeys(tags);
 
-  // transform tagnames to random strings starting with "A" (Aj4awwubx1or);
+  // transform tagnames to random strings starting with "AB" (Aj4awwubx1or);
   var key, reactTags = {}, reactKeys=[];
   for(var i = 0; i<keys.length; i++) {
-    key = "A"+Math.random().toString(36).substring(2)+Math.random().toString(36).substring(2);
+    key = "AB"+Math.random().toString(36).substring(2);
     reactTags[key] = tags[keys[i]];
     reactKeys.push(key);
     str = str
