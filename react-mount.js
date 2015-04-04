@@ -106,12 +106,10 @@ function mountTag(tag, tags, data) {
 
   var jsx = htmlToJsx(str);
 
-  // replace data variables (key) with corrected variables (data['key'])
+  // replace data variables {key} with corrected variables {data['key']}
   for(key in data) {
     jsx = jsx
-      .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
-        return match.replace(new RegExp("=(\{"+key+"\})","g"),"={data['"+key+"']}");
-      });
+      .replace(new RegExp("(\{"+key+"\})","g"),"{data['"+key+"']}");
   }
   
   var component = ReactTransform(jsx).code;
