@@ -174,9 +174,9 @@ _value_
 > 	[tag]		: 	[component]
 > }
 > ```
-> Tag names are __case insensitive__. All the above definitions would do the same / the first component would be mounted to all of the tags).
+> Tag names are __case insensitive__. All the above definitions would do the same / the first component would be mounted to all of the tags.
 >
-> __Tipp:__ All lower case tag names containing at least one dash are valid html.
+> __Tipp:__ Lower case tag names containing at least one dash are/will be valid html. See: http://w3c.github.io/webcomponents/spec/custom/#concepts
 
 #####props `optional`
 > _Type_ `object`
