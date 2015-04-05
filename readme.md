@@ -1,5 +1,5 @@
 #react-mount
-Use custom tags to place your react components directly in html.
+Use custom tags to place react components directly in html.
 
 - [Install](#install)
 - [Usage](#usage)
