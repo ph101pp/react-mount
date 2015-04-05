@@ -4,6 +4,7 @@ Use custom tags to place your react components directly in html.
 - [Install](#install)
 - [Usage](#usage)
 - [Tag Content](#tag-content)
+- [Nested Components](#nested-components)
 - [Expressions and Properties](#expressions-and-properties)
 - [Html Comments](#html-comments)
 - [API: mount(…)](#api)
@@ -67,14 +68,47 @@ _React is running._
 
 ##Tag content
 Content of custom tags can be written in Html or JSX.
-All children of a custom tag will be available in the mounted react component with `this.props.children`.
+```html
+<translucent-component>
+	<p style="text-transform: uppercase">
+		Html is transformed to <span style="font-weight:bold">JSX</span> for you.
+	</p>
+</translucent-component>
+```
+The content of a custom tag is available in the mounted react component with `this.props.children`:
+```js
+var translucentComponent = React.createClass({
+	render: function() {
+		return (
+			{this.props.children}
+		);
+	}
+});
+```
+#####Output
+HTML IS TRANSFORMED TO __JSX__ FOR YOU.</u>
 
+##Nested Components
+Custom component tags can be nested as long as all used components are properly mounted:
+```html
+<translucent-component>
+	<react-component />
+</translucent-component>
+```
+```js 
+mount({
+	"react-component"		:	ReactComponent,
+	"translucent-component"	:	TranslucentComponent
+});
+```
+#####Output
+_React is running._
 ##Expressions and Properties
 `{expressions}` can be used within a tag and are executed properly.
 Properties to be used within expressions can be passed as optional last parameter to the `mount` function:
 ```js
 React.mount({
-	"react-component" : ReactComponent
+	"translucent-component" : ReactComponent
 },
 {
 	"key" : "value"
@@ -89,19 +123,32 @@ These properties are avaliable within expressions as `props.key`:
 {key} 	// "value"
 
 ```
+```html
+<translucent-component property={props.key}>
+	<i>{key}</i>
+	<b>{props.key === "value" ? "Yes" : "No"}</b>
+</translucent-component>
+```
+Within react component:<br>
+`this.props.property === "value"`<br>
+`this.props.children` contains `<p>value</p>` and `<p>Yes</p>`.
+#####Output
+_value_ __Yes__
+
 
 ##HTML Comments
 Html comments do not affect the output of the rendering in any way.<br>
 They can be used to mask unrendered content before react kicks in.
 ```html
-<react-component>
+<translucent-component>
 	<!--
-		<p>{key}</p>
+		<i>{key}</i>
 	-->
-</react-component>
+</translucent-component>
 ```
 `this.props.children` still contains `<p>value</p>`.
-
+#####Output
+_value_
 ##API
 
 ### `mount(      [context,]      tags      [, props]      );`
@@ -120,14 +167,16 @@ They can be used to mask unrendered content before react kicks in.
 > 
 > ```js
 > {
-> 	"tagname"	: 	ReactComponent,
-> 	"tagName"	: 	ReactComponent,
-> 	"TAGNAME"	: 	ReactComponent,
+> 	"tag-name"	: 	ReactComponent,
+> 	"tag-Name"	: 	ReactComponent,
+> 	"TAG-NAME"	: 	ReactComponent,
 > 	...
 > 	[tag]		: 	[component]
 > }
 > ```
-> Tag names are __case insensitive__. All the above definitions would do the same / override each other.
+> Tag names are __case insensitive__. All the above definitions would do the same / the first component would be mounted to all of the tags).
+>
+> __Tipp:__ All lower case tag names containing at least one dash are valid html.
 
 #####props `optional`
 > _Type_ `object`
