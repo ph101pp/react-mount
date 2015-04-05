@@ -1,45 +1,113 @@
 #react-mount
-Use your react components directly in HTML.
+Use custom tags to place your react components directly in html.
 
 ##Install
 
-Download _react-mount_ from Github or [npm](https://www.npmjs.org/package/react-mount):
+#####Download
+From Github or [npm](https://www.npmjs.org/package/react-mount) or
 
 ```sh
-	$ npm install --save react-save
+$ npm install --save react-mount
 ```
 
-Include it into your project:
-
+#####Include
+With AMD or Browserify:
 ```js
-	var mount = require("react-mount");
+var mount = require("react-mount");
 ```
+Vanilla:
 ```html
-	<script src="path/to/file/react-mount.js"></script>
+<script src="path/to/file/react-mount.js"></script>
 ```
 
 
 ##Usage
+###Basic
 
 ```html
-	<body>
-		<react-component />
-
-		<script src="path/to/file/react-mount.js"></script>
+<body>
+    <react-component status={prop} />
+		
+		<!-- Dependencies -->
+		<script src="react.js"></script>
+		<script src="JSXTransformer.js"></script>
+		
+		<!-- React component -->
 		<script>
-
-			var ReactComponent = React.createClass({
-			  render: function() {
-			    return React.createElement("p", null, React is running.);
-			  }
-			});
-
-			mount({
-				"react-component" : ReactComponent
+		    var ReactComponent = React.createClass({
+		      render: function() {
+		        return (
+		        	<i>React is running.</i>
+		        );
+		      }
+		    });
+		</script>
+ 		
+		<!-- Mount component -->
+		<script>
+			// Wait for JSXTransform: Not necessary with precompiled components
+			window.addEventListener( "DOMContentLoaded", function(){ 
+				
+				React.mount({
+					"react-component" : ReactComponent
+				});
+			
 			});
 		</script>
-	</bod>
+</body>
+```
+#####Output
+_React is running._
 
+
+##API
+
+### mount(   _[context,]_   tags   _[, props]_   );
+
+####context `optional`
+_Type_ `HTMLElement` <br>
+_Default_ `document.body`
+
+Only tags within this element will be mounted.
+
+
+####tags 
+_Type_ `object`
+
+Object with _tags_ and their corresponding _components_ to be mounted.
+
+```js
+{
+	"tagname"	: 	ReactComponent,
+	"tagName"	: 	ReactComponent,
+	"TAGNAME"	: 	ReactComponent,
+	...
+	[tag]		: 	[component]
+}
+```
+Tag names are __case insensitive__. All the above definitions would do the same / override each other.
+
+####props `optional`
+_Type_ `object`
+
+`key:value` pairs of Properties:
+```js
+{
+	"status"	: 	"React is running.",
+	"flag"		: 	true
+	...
+	[key]		: 	[value]
+}
 ```
 
+Props can be used in `{expressions}` within the mounted tags:
+```js
+{props.key}
+{props.status} 				// React is running.
+{props.flag ? "Yes" : "No"}	// Yes
 
+// shortcut for simple reference
+{key} 	// React is running.
+{flag}	// true
+
+```
