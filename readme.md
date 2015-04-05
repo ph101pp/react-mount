@@ -1,16 +1,23 @@
 #react-mount
 Use custom tags to place your react components directly in html.
 
+- [Install](#install)
+- [Usage](#usage)
+- [Tag Content](#tag-content)
+- [Html Comments](#html-comments)
+- [API](#api)
+
+
 ##Install
 
-#####Download
+###Download
 From Github or [npm](https://www.npmjs.org/package/react-mount) or
 
 ```sh
 $ npm install --save react-mount
 ```
 
-#####Include
+###Include
 With AMD or Browserify:
 ```js
 var mount = require("react-mount");
@@ -22,7 +29,7 @@ Vanilla:
 
 
 ##Usage
-###Basic
+###Example
 
 ```html
 <body>
@@ -58,6 +65,15 @@ Vanilla:
 ```
 #####Output
 _React is running._
+
+###Tag content
+You can write normal HTML or JSX in your custom tags.
+All children of your custom tag will be available in the mounted react component with `this.props.chilren`.
+
+
+###Expressions and Properties
+
+###HTML Comments
 
 
 ##API
