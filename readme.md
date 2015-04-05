@@ -66,7 +66,7 @@ Vanilla:
 #####Output
 _React is running._
 
-##Tag content
+##Tag Content
 Content of custom tags can be written in Html or JSX.
 ```html
 <translucent-component>
