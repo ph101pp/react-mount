@@ -66,14 +66,41 @@ Vanilla:
 _React is running._
 
 ##Tag content
-You can write normal HTML or JSX in your custom tags.
-All children of your custom tag will be available in the mounted react component with `this.props.chilren`.
-
+You can write normal HTML or JSX in your custom tags.<br>
+All children of your custom tag will be available in the mounted react component with `this.props.children`.
 
 ##Expressions and Properties
+`{expressions}` can be used within a tag and are executed properly.
+Properties can to be used within expressions can be passed as optional last parameter to the `mount` function:
+```js
+React.mount({
+	"react-component" : ReactComponent
+},
+{
+	"key" : "value"
+});
+```
+These properties are avaliable within expressions as `props.key`:
+```js
+{props.key} // "value"
+{props.key === "value" ? "Yes" : "No"} // Yes
+
+// shortcut for simple reference
+{key} 	// "value"
+
+```
+
 
 ##HTML Comments
-
+Html comments don't affect the output. They can be used to mask unrendered content before React kicks in.
+```html
+<react-component>
+	<!--
+		<p>{key}</p>
+	-->
+</react-component>
+```
+`this.props.children` still contains `<p>value</p>`
 
 ##API
 
