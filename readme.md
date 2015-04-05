@@ -11,14 +11,14 @@ Use custom tags to place your react components directly in html.
 
 ##Install
 
-####Download
+#####Download
 From Github or [npm](https://www.npmjs.org/package/react-mount) or
 
 ```sh
 $ npm install --save react-mount
 ```
 
-####Include
+#####Include
 With AMD or Browserify:
 ```js
 var mount = require("react-mount");
@@ -66,8 +66,8 @@ Vanilla:
 _React is running._
 
 ##Tag content
-You can write normal HTML or JSX in your custom tags.<br>
-All children of your custom tag will be available in the mounted react component with `this.props.children`.
+Content of custom tags can be written in Html or JSX.
+All children of a custom tag will be available in the mounted react component with `this.props.children`.
 
 ##Expressions and Properties
 `{expressions}` can be used within a tag and are executed properly.
@@ -106,14 +106,14 @@ They can be used to mask unrendered content before react kicks in.
 
 ### `mount(      [context,]      tags      [, props]      );`
 
-####context `optional`
+#####context `optional`
 > _Type_ `HTMLElement` <br>
 > _Default_ `document.body`
 > 
 > Only tags within this element will be mounted.
 
 
-####tags `required`
+#####tags `required`
 > _Type_ `object`
 > 
 > Object with _tags_ and their corresponding _components_ to be mounted.
@@ -129,7 +129,7 @@ They can be used to mask unrendered content before react kicks in.
 > ```
 > Tag names are __case insensitive__. All the above definitions would do the same / override each other.
 
-####props `optional`
+#####props `optional`
 > _Type_ `object`
 > 
 > `key:value` pairs of Properties:
