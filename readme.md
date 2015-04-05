@@ -32,34 +32,34 @@ Vanilla:
 ##Usage
 ```html
 <body>
-    <react-component status={prop} />
-		
-		<!-- Dependencies -->
-		<script src="react.js"></script>
-		<script src="JSXTransformer.js"></script>
-		
-		<!-- React component -->
-		<script>
-		    var ReactComponent = React.createClass({
-		      render: function() {
-		        return (
-		        	<i>React is running.</i>
-		        );
-		      }
-		    });
-		</script>
- 		
-		<!-- Mount component -->
-		<script>
-			// Wait for JSXTransform: Not necessary with precompiled components
-			window.addEventListener( "DOMContentLoaded", function(){ 
-				
-				React.mount({
-					"react-component" : ReactComponent
-				});
+	<react-component />
+	
+	<!-- Dependencies -->
+	<script src="react.js"></script>
+	<script src="JSXTransformer.js"></script>
+	
+	<!-- React component -->
+	<script>
+	    var ReactComponent = React.createClass({
+	      render: function() {
+	        return (
+	        	<i>React is running.</i>
+	        );
+	      }
+	    });
+	</script>
+ 	
+	<!-- Mount component -->
+	<script>
+		// Wait for JSXTransform: Not necessary with precompiled components
+		window.addEventListener( "DOMContentLoaded", function(){ 
 			
+			React.mount({
+				"react-component" : ReactComponent
 			});
-		</script>
+		
+		});
+	</script>
 </body>
 ```
 #####Output
@@ -71,7 +71,7 @@ All children of your custom tag will be available in the mounted react component
 
 ##Expressions and Properties
 `{expressions}` can be used within a tag and are executed properly.
-Properties can to be used within expressions can be passed as optional last parameter to the `mount` function:
+Properties to be used within expressions can be passed as optional last parameter to the `mount` function:
 ```js
 React.mount({
 	"react-component" : ReactComponent
@@ -90,9 +90,9 @@ These properties are avaliable within expressions as `props.key`:
 
 ```
 
-
 ##HTML Comments
-Html comments don't affect the output. They can be used to mask unrendered content before React kicks in.
+Html comments do not affect the output of the rendering in any way.<br>
+They can be used to mask unrendered content before react kicks in.
 ```html
 <react-component>
 	<!--
@@ -100,11 +100,11 @@ Html comments don't affect the output. They can be used to mask unrendered conte
 	-->
 </react-component>
 ```
-`this.props.children` still contains `<p>value</p>`
+`this.props.children` still contains `<p>value</p>`.
 
 ##API
 
-### mount(   _[context,]_   tags   _[, props]_   );
+### `mount(      [context,]      tags      [, props]      );`
 
 ####context `optional`
 > _Type_ `HTMLElement` <br>
@@ -113,7 +113,7 @@ Html comments don't affect the output. They can be used to mask unrendered conte
 > Only tags within this element will be mounted.
 
 
-####tags 
+####tags `required`
 > _Type_ `object`
 > 
 > Object with _tags_ and their corresponding _components_ to be mounted.
@@ -142,7 +142,7 @@ Html comments don't affect the output. They can be used to mask unrendered conte
 > }
 > ```
 > 
-> Props can be used in `{expressions}` within the mounted tags:
+> Properties can be used in `{expressions}` within the mounted tags:
 > ```js
 > {props.key}
 > {props.status} 				// React is running.
@@ -153,3 +153,4 @@ Html comments don't affect the output. They can be used to mask unrendered conte
 > {flag}	// true
 > 
 > ```
+> See also: [Expressions and Properties](#expressions-and-properties)
