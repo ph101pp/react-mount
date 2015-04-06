@@ -23,23 +23,23 @@ function htmlToJsx(str){
     // remove html comments.. doesn't work in safari.. wtf
     //.replace(/<!--((?:\s|.)*)-->/g,"")
     // class attribute to className
-    .replace(/(<(?:[^>"']|".*"|'.*')*)class(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
+    .replace(/(<(?:[^>"']|".*"|'.*')*)\sclass(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
     // for attribute to htmlFor
-    .replace(/(<(?:[^>"']|".*"|'.*')*)for(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"htmlFor"+"$2");
+    .replace(/(<(?:[^>"']|".*"|'.*')*)\sfor(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"htmlFor"+"$2");
 
   // "selfclose" self closing tags: "…>" to "…/>"
   for(var k=0; k<selfClosingTags.length; k++) {
     str = str.replace(new RegExp("(<"+selfClosingTags[k]+"(?:[^>\"']|\".*\"|'.*')*)\/?>","ig"),"$1"+" />");
   }
 
-  // Remove auto-quotes around {expressions}
+  // Remove auto-quotes around {expressions} + Remove {expression}="" attachment
   str = str
     .replace(/<(?:[^>\"']|\".*\"|'.*')*=(?:[^>\"']|\".*\"|'.*')*>/g, function(match){
-      return match.replace(/(?:"|')(\{.*?\})(?:"|')/g,"$1");
+      return match.replace(/(?:"|')?(\{(?:[^\'"}]|".*"|'.*')*\})(?:"|')?(?:=""|='')?/g, "$1");
     });
 
   // Transform style attribute string ("color:red; background-image:url()") to object ({{color:'red', backgroundImage:'url()'}})
-  str = str.replace(/(<[A-Z](?:[^>"']|".*"|'.*')*style\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
+  str = str.replace(/(<[A-Z](?:[^>"']|".*"|'.*')*\sstyle\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
     var styles = "";
     style
       .slice(1,-1)
