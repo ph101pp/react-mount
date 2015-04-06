@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "author": {
     "name" : "Philipp Adrian",
-    "email" : "philipp.adrian@dowjones.com",
-    "company" : "Dow Jones & Co.",
-    "department" : "Newsroom Development"
+    "email" : "hello@philippadrian.com",
+    "website" : "philippadrian.com"
   },
   "description": "Enable React components within html like web components",
   "keywords": [
@@ -21,7 +20,7 @@
   },
 
   "devDependencies": {
-    "gulp": "^3.8.x",
+    "gulp": "^3.8.11",
     "gulp-jshint": "^1.9.x",
     "gulp-uglify" :"^1.0.x",
     "gulp-rename" : "^1.2.x",

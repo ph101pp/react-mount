@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+    <title>Basic Example with JSX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" />
+    <!--[if lt IE 9]>
+      <script>
+        (function(){
+          var ef = function(){};
+          window.console = window.console || {log:ef,warn:ef,error:ef,dir:ef};
+        }());
+      </script>
+
+      <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-sham.js"></script>
+
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+      <script>html5.addElements('example-application')</script>
+    <![endif]-->
+  </head>
+  <body class="container">
+
+    <div class="jumbotron">
+      <h5>react-mount</h5>
+      <h1>
+        Basic Example
+      </h1>
+
+      <example-application>
+        <p>If you read this, the component has not been mouted. React is not running.</p>
+      </example-application>
+    </div>
+
+
+
+    <!-- react-mount dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/JSXTransformer.js"></script>
+    <script src="../../react-mount.js"></script>
+    
+    <!-- react component -->
+    <script type="text/jsx">
+      var ExampleApplication = React.createClass({
+        render: function() {
+          return <p>Component mounted. React is running.</p>;
+        }
+      });
+    </script>
+
+    <!-- mount components -->
+    <script>
+      // wait for JSXTransformer to be done. (Only necessary if components are not precompiled.
+      window.addEventListener( "DOMContentLoaded", function(){
+        React.mount({
+          "example-application" : ExampleApplication
+        });
+      });
+
+    </script>
+  </body>
+</html>

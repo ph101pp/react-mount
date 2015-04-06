@@ -24,19 +24,21 @@ function browserify(){
 ///////////////////////////////////////////////////////////////////////////////
 
 function scripts(){
-  gulp.src("examples/**/app.jsx")
+  gulp.src("./test/**/app.jsx")
     .pipe(browserify())
-    .pipe(rename(function(path){
-      path.dirname+="/../";
-      path.basename="bundle";
-      path.extname=".js";
-    }))
-    .pipe(gulp.dest("examples"));
+    .pipe(rename("bundle.js"))
+    // .pipe(rename(function(path){
+    //   console.log(path);
+    //   path.dirname+="/../";
+    //   path.basename="bundle";
+    //   path.extname=".js";
+    // }))
+    .pipe(gulp.dest("./test"));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 function watch(){
-  gulp.watch(["./examples/**/*.jsx", "./react-mount.js"], ['scripts']);
+  gulp.watch(["./test/**/*.jsx", "./react-mount.js"], ['scripts']);
 }
 
