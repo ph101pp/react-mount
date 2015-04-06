@@ -149,6 +149,9 @@ They can be used to mask unrendered content before react kicks in.
 `this.props.children` still contains `<p>value</p>`.
 #####Output
 _value_
+
+__Tipp: _Real_ comments can be written in the JSX style `{/* comment */}`
+
 ##API
 
 ### `mount(      [context,]      tags      [, props]      );`
