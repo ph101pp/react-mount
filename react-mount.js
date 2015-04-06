@@ -10,22 +10,23 @@ var selfClosingTags = ["area","base","br","col","command","embed","hr","img","in
 ///////////////////////////////////////////////////////////////////////////////
 // Export / Attach / Public
 
-module.exports = mount;
-if(typeof window.React === "object") window.React.mount = mount;
-if(typeof define === "function" && define.amd) define(function(){return mount});
+module.exports = mountTags;
+if(typeof window.React === "object") window.React.mount = mountTags;
+if(typeof define === "function" && define.amd) define(function(){return mountTags});
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
 
 function htmlToJsx(str){
-  str = str
-    // remove html comments.. doesn't work in safari.. wtf
-    //.replace(/<!--((?:\s|.)*)-->/g,"")
-    // class attribute to className
-    .replace(/(<(?:[^>"']|".*"|'.*')*)\sclass(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"className"+"$2")
-    // for attribute to htmlFor
-    .replace(/(<(?:[^>"']|".*"|'.*')*)\sfor(\s*=(?:[^>"']|".*"|'.*')*>)/ig, "$1"+"htmlFor"+"$2");
+  // // remove html comments.. doesn't work in safari.. wtf
+  // str = str
+  //   .replace(/<!--((?:\s|.)*)-->/g,"")
+
+  // for attribute to htmlFor
+  str = replaceAttribute(str, "for", "htmlFor");
+  // class attribute to className
+  str = replaceAttribute(str, "class", "className");
 
   // "selfclose" self closing tags: "…>" to "…/>"
   for(var k=0; k<selfClosingTags.length; k++) {
@@ -39,7 +40,7 @@ function htmlToJsx(str){
     });
 
   // Transform style attribute string ("color:red; background-image:url()") to object ({{color:'red', backgroundImage:'url()'}})
-  str = str.replace(/(<[A-Z](?:[^>"']|".*"|'.*')*\sstyle\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
+  str = str.replace(/(<(?:[^>"']|".*"|'.*')*\sstyle\s*=\s*)((?:"(?:[^"]|\s)*")|(?:'(?:[^']|\s)*'))((?:[^>"']|".*"|'.*')*>)/ig, function(match, start, style, end){
     var styles = "";
     style
       .slice(1,-1)
@@ -65,47 +66,44 @@ function htmlToJsx(str){
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function isDOMElement(o) {
-  return (
-    typeof HTMLElement === "object" ? 
-      o instanceof HTMLElement : //DOM2
-      o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
-  );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-function mount(context, tags, props){
-  // Normalize Input
-  if(!isDOMElement(context)){
-    props = tags;
-    tags = context;
-    context =  document.body;
-  }
-  mountTags(context, tags, props || {});
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-function mountTag(tag, tags, props) {
+function mountTag(tag, tags, opts) {
   var str = tag.outerHTML;
   var keys = objectKeys(tags);
+  var props = opts.props || {};
+  var attributes = opts.attributes || [];
 
   // transform tagnames to random strings starting with "AB" (Aj4awwubx1or);
-  var key, reactTags = {}, reactKeys=[];
+  var key, reactTags = {}, reactKeys=[], tagAttributes = [];
   for(var i = 0; i<keys.length; i++) {
     key = "AB"+Math.random().toString(36).substring(2);
-    reactTags[key] = tags[keys[i]];
+    if(typeof tags[keys[i]] !== "function") {
+      reactTags[key] = tags[keys[i]].slice(-1)[0];
+      tagAttributes = tags[keys[i]].slice(0,-1);
+    }
+    else reactTags[key] = tags[keys[i]];
+
     reactKeys.push(key);
     str = str
-      .replace(new RegExp("(<\/?)"+keys[i], "ig"), "$1"+key)
+      .replace(new RegExp("(<\/?)"+keys[i]+"(?:[^>\"']|\".*\"|'.*')*>", "ig"), function(match, start){
+        // find/replace spell-save attributes within tag to restore capitals
+        if(start !== "</")
+          for(var a=0; a<tagAttributes.length; a++)
+            match = replaceAttribute(match, tagAttributes[a], tagAttributes[a]);
+
+        // replace key
+        return match
+          .replace(new RegExp(keys[i], "i"), key);
+      });
   }
 
-  // remove/disable comments
-  str = str.replace(/<!--|-->/g,"");
+  // remove/disable html comments
+  str = str.replace(/<!--|-->/g,"")
+
+  // find/replace global spell-save attributes to restore capitals
+  for(var i=0; i<attributes.length; i++) 
+    str = replaceAttribute(str, attributes[i], attributes[i]);
 
   var jsx = htmlToJsx(str);
-
   // replace props variables {key} with corrected variables {props['key']}
   for(key in props) {
     jsx = jsx
@@ -130,7 +128,9 @@ function mountTag(tag, tags, props) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function mountTags(context, tags, props){
+function mountTags(tags, opts){
+  opts = opts || {};
+  var context = opts.context || document.body;
   var keys = objectKeys(tags);
 
   // keys to uppercase to compare to nodeName
@@ -138,7 +138,7 @@ function mountTags(context, tags, props){
 
   // if context is tag
   if(keys.indexOf(context.nodeName) >= 0) {
-    mountTag(context, tags, props);
+    mountTag(context, tags, opts);
     return;
   };
 
@@ -156,7 +156,7 @@ function mountTags(context, tags, props){
         }
         if(el === context) break;
       }
-      if(mount) mountTag(nodes[n], tags, props);
+      if(mount) mountTag(nodes[n], tags, opts);
     }
   }  
 }
@@ -167,6 +167,13 @@ function objectKeysShim(o){
   var keys = [];
   for(key in o) keys.push(key);
   return keys;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+function replaceAttribute(str, search, replace){
+  return str
+    .replace(new RegExp("(<(?:[^>\"']|\".*\"|'.*')*\\s)"+search+"(\s*=(?:[^>\"']|\".*\"|'.*')*>)", "ig"), "$1"+replace+"$2");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
