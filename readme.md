@@ -150,7 +150,7 @@ They can be used to mask unrendered content before react kicks in.
 #####Output
 _value_
 
-__Tipp: _Real_ comments can be written in the JSX style `{/* comment */}`
+__Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 
 ##API
 

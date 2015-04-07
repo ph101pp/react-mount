@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+    <title>Basic Example with Precompiled JSX</title>
+    <link rel="stylesheet" href="css/base.css" />
+
+
+    <!--     
+      <script src="vendor/es5-shim.min.js"></script>
+      <script src="vendor/es5-sham.min.js"></script>
+      <script src="vendor/console-polyfill.js"></script>
+
+     -->
+  </head>
+  <body>
+    <h1 id="hello" class="hello">Basic Example with Precompiled JSX</h1>
+    <header>
+      <div>
+        <ExampleApplication>
+          <p>
+            If you can see this, React is not running. Try running:
+          </p>
+          <pre>npm install -g react-tools cd examples/basic-jsx-precompile/ jsx . build/</pre>
+          <Text></Text>
+        </ExampleApplication>
+      </div>
+    </header>
+
+    <Text><p><b>I repeat:</b></p></Text>
+    <h4>Example Details</h4>
+    <p>This is written with JSX in a separate file and precompiled to vanilla JS by running:</p>
+    <pre>npm install -g react-tools cd examples/basic-jsx-precompile/ jsx . build/</pre>
+    <p>
+      Learn more about React at
+      <a href="http://facebook.github.io/react" target="_blank">facebook.github.io/react</a>.
+    </p>
+
+    <script src="bundle.js"></script>
+    <!--     
+      <script src="vendor/es5-shim.min.js"></script>
+      <script src="vendor/es5-sham.min.js"></script>
+      <script src="vendor/console-polyfill.js"></script>
+     -->
+  </body>
+</html>
