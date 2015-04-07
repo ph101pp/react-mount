@@ -17,14 +17,13 @@
 
       <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
       <script>
-        html5.addElements('ButtonToolbar');
-        html5.addElements('Button');
+        html5.addElements('ButtonToolbar Button Well Jumbotron');
       </script>
     <![endif]-->
   </head>
   <body class="container">
 
-    <div class="jumbotron">
+    <Jumbotron>
       <h5>react-mount</h5>
       <h1>
         React Bootstrap Example
@@ -40,9 +39,7 @@
           <Button bsStyle='link'>Link</Button>
         </ButtonToolbar>
       </Well>
-    </div>
-
-
+    </Jumbotron>
 
     <!-- react-mount dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react.min.js"></script>
@@ -54,8 +51,9 @@
     <script>
         React.mount({
           "ButtonToolbar" : ReactBootstrap.ButtonToolbar,
-          "Button" : ReactBootstrap.Button,
-          "Well" : ReactBootstrap.Well
+          "Button" : ["bsStyle", ReactBootstrap.Button],
+          "Well" : ReactBootstrap.Well,
+          "Jumbotron" : ReactBootstrap.Jumbotron
         });
     </script>
   </body>
