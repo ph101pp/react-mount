@@ -77,6 +77,7 @@ function mountTag(tag, tags, opts) {
   for(var i = 0; i<keys.length; i++) {
     key = "AB"+Math.random().toString(36).substring(2);
     if(typeof tags[keys[i]] !== "function") {
+      if(typeof tags[keys[i]].slice !== "function") continue;
       reactTags[key] = tags[keys[i]].slice(-1)[0];
       tagAttributes = tags[keys[i]].slice(0,-1);
     }
@@ -92,7 +93,7 @@ function mountTag(tag, tags, opts) {
 
         // replace key
         return match
-          .replace(new RegExp(keys[i], "i"), key);
+          .replace(new RegExp(start+keys[i]+"(\\s|>)", "i"), start+key+"$1");
       });
   }
 
