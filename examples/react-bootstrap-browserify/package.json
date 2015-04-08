@@ -9,6 +9,7 @@
   "description": "react-mount – react-bootstrap with browserify",
 
   "dependencies": {
+    "react-mount" : "git://github.com/greenish/react-mount.git#master",
     "react-bootstrap" : "^0.20.1"
   },
 

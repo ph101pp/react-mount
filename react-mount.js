@@ -3,7 +3,9 @@
 
 require = require || requireShim;
 var React = window.React || require("react");
-var ReactTransform = window.JSXTransformer ? window.JSXTransformer.transform : require("react-tools").transformWithDetails;
+var ReactTransform = window.JSXTransformer ? 
+  window.JSXTransformer.transform : 
+  require("react-tools").transformWithDetails;
 var objectKeys = Object.keys || objectKeysShim;
 var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
 var preserveReactAttributes = ["onBeforeInput", "onBeforeInputCapture", "onCompositionEnd", "onCompositionEndCapture", "onCompositionStart", "onCompositionStartCapture", "onCompositionUpdate", "onCompositionUpdateCapture", "onChange", "onChangeCapture", "ResponderEventPlugin", "SimpleEventPlugin", "TapEventPlugin", "EnterLeaveEventPlugin", "ChangeEventPlugin", "SelectEventPlugin", "BeforeInputEventPlugin", "AnalyticsEventPlugin", "MobileSafariClickEventPlugin", "onMouseEnter", "onMouseLeave", "onSelect", "onSelectCapture", "onBlur", "onBlurCapture", "onClick", "onClickCapture", "onContextMenu", "onContextMenuCapture", "onCopy", "onCopyCapture", "onCut", "onCutCapture", "onDoubleClick", "onDoubleClickCapture", "onDrag", "onDragCapture", "onDragEnd", "onDragEndCapture", "onDragEnter", "onDragEnterCapture", "onDragExit", "onDragExitCapture", "onDragLeave", "onDragLeaveCapture", "onDragOver", "onDragOverCapture", "onDragStart", "onDragStartCapture", "onDrop", "onDropCapture", "onFocus", "onFocusCapture", "onInput", "onInputCapture", "onKeyDown", "onKeyDownCapture", "onKeyPress", "onKeyPressCapture", "onKeyUp", "onKeyUpCapture", "onLoad", "onLoadCapture", "onError", "onErrorCapture", "onMouseDown", "onMouseDownCapture", "onMouseMove", "onMouseMoveCapture", "onMouseOut", "onMouseOutCapture", "onMouseOver", "onMouseOverCapture", "onMouseUp", "onMouseUpCapture", "onPaste", "onPasteCapture", "onReset", "onResetCapture", "onScroll", "onScrollCapture", "onSubmit", "onSubmitCapture", "onTouchCancel", "onTouchCancelCapture", "onTouchEnd", "onTouchEndCapture", "onTouchMove", "onTouchMoveCapture", "onTouchStart", "onTouchStartCapture", "onWheel", "onWheelCapture", "className"];
@@ -11,8 +13,10 @@ var preserveReactAttributes = ["onBeforeInput", "onBeforeInputCapture", "onCompo
 // Export / Attach / Public
 
 module.exports = mountTags;
-if(typeof window.React === "object") window.React.mount = mountTags;
-if(typeof define === "function" && define.amd) define(function(){return mountTags});
+if(typeof window.React === "object") 
+  window.React.mount = mountTags;
+if(typeof define === "function" && define.amd) 
+  define(function(){return mountTags});
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

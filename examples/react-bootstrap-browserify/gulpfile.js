@@ -24,10 +24,7 @@ function browserify(){
 function scripts(){
   gulp.src("app.js")
     .pipe(browserify())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(rename("react-bootstrap-mounted.js"))
     .pipe(gulp.dest("./"));
 }
-
-///////////////////////////////////////////////////////////////////////////////
-
