@@ -7,6 +7,11 @@
     "website" : "philippadrian.com"
   },
   "description": "Enable React components within html like web components",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greenish/react-mount.git"
+  },
+  
 
   "main":"react-mount.js",
 
@@ -32,7 +37,7 @@
     "reactify" : "^1.1.0"
   },
   "engines": {
-    "node": ">0.10.x"
+    "node": ">=0.10.x"
   },
 
   "private" : false,
