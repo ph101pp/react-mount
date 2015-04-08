@@ -1,5 +1,5 @@
-(function(module, require, window, document, undefined){
 "use strict";
+(function(module, require, window, document, undefined){
 
 require = require || requireShim;
 var React = window.React || require("react");
@@ -119,12 +119,14 @@ function mountTag(tag, tags, opts) {
       .replace(new RegExp(reactKeys[i],"g"), "reactTags['"+reactKeys[i]+"']"); 
   }
   
-  // Render JSX and transform it into HTML
-  var tempElement = document.createElement('div');
-  tempElement.innerHTML = React.renderToString(eval(component));
+  // create wrapper to mount into
+  var wrapper = document.createElement('div');
   
-  // Replace tag with rendered HTML
-  tag.parentNode.replaceChild(tempElement.childNodes[0], tag);
+  // Replace tag with wrapper
+  tag.parentNode.replaceChild(wrapper, tag);
+
+  // Render component into wrapper.
+  React.render(eval(component), wrapper);
 } 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -7,18 +7,20 @@
     "website" : "philippadrian.com"
   },
   "description": "Enable React components within html like web components",
+
+  "main":"react-mount.js",
+
   "keywords": [
     "react",
     "reactjs",
     "mount",
     "webcomponents"
   ],
-
-  "dependencies": {
-    "react" : "^0.13.1",
-    "react-tools" : "^0.13.1" 
+  
+  "peerDependencies": {
+    "react": "^0.13.x",
+    "react-tools" : "^0.13.x"
   },
-
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-jshint": "^1.9.x",
@@ -26,7 +28,6 @@
     "gulp-rename" : "^1.2.x",
 
     "browserify": "^8.0.x",
-    "browserify-shim": "^3.2.x",
     "vinyl-transform": "^1.0.x",
     "reactify" : "^1.1.0"
   },
