@@ -6,7 +6,7 @@ var React = window.React || require("react");
 var ReactTransform = window.JSXTransformer ? window.JSXTransformer.transform : require("react-tools").transformWithDetails;
 var objectKeys = Object.keys || objectKeysShim;
 var selfClosingTags = ["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"];
-
+var preserveReactAttributes = ["autoFocus", "checkedLink", "valueLink", "onChange", "dangerouslySetInnerHTML", "defaultValue", "defaultChecked"];
 ///////////////////////////////////////////////////////////////////////////////
 // Export / Attach / Public
 
@@ -70,7 +70,7 @@ function mountTag(tag, tags, opts) {
   var str = tag.outerHTML;
   var keys = objectKeys(tags);
   var props = opts.props || {};
-  var attributes = opts.attributes || [];
+  var preserveAttributes = opts.preserveAttributes || [];
 
   // transform tagnames to random strings starting with "AB" (Aj4awwubx1or);
   var key, reactTags = {}, reactKeys=[], tagAttributes = [];
@@ -101,6 +101,7 @@ function mountTag(tag, tags, opts) {
   str = str.replace(/<!--|-->/g,"")
 
   // find/replace global spell-save attributes to restore capitals
+  var attributes = preserveReactAttributes.concat(preserveAttributes);
   for(var i=0; i<attributes.length; i++) 
     str = replaceAttribute(str, attributes[i], attributes[i]);
 
