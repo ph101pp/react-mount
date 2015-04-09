@@ -1,3 +1,10 @@
+/**
+ * Copyright 2015, Philipp Adrian, philippadrian.com
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 "use strict";
 (function(module, require, window, document, undefined){
 
@@ -110,6 +117,7 @@ function mountTag(tag, tags, opts) {
     str = replaceAttribute(str, attributes[i], attributes[i]);
 
   var jsx = htmlToJsx(str);
+  
   // replace props variables {key} with corrected variables {props['key']}
   for(key in props) {
     jsx = jsx

@@ -9,7 +9,7 @@
     "website" : "http://philippadrian.com"
   },
 
-  "description": "Enable React components within html like web components",
+  "description": "Use custom tags to place react components directly in html.",
  
   "repository": {
     "type": "git",
@@ -21,7 +21,12 @@
   "keywords": [
     "react",
     "reactjs",
+    "html",
+    "client",
+    "frontend",
     "mount",
+    "custom",
+    "tags",
     "webcomponents"
   ],
 
