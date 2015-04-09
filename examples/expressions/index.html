@@ -24,7 +24,7 @@
     <div class="jumbotron">
       <h5>react-mount</h5>
       <h1>
-        Basic Example
+        Expressions Example
       </h1>
 
       <my-component attribute = {attribute}>
@@ -45,14 +45,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/JSXTransformer.js"></script>
     <script src="../../react-mount.js"></script>
     
-    <!-- react component -->
+
     <script>
+      // pretty transludent (precompiled) react component
       var translucentComponent = React.createClass({
         render: function() {
           return React.createElement("div", {className:this.props.attribute}, this.props.children);
         }
       });
 
+      // properties to be available in html
       var props = {
         paragraph : "Component mounted. React is running.",
         list : [
@@ -61,7 +63,8 @@
           "Item 3"
         ],
         attribute : "myAttribute"
-      }
+      };
+      
       //mount components
       React.mount({ "my-component":translucentComponent }, { props:props });
     </script>
