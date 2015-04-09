@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+    <title>react-mount example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" />
+    <!--[if lt IE 9]>
+      <script>
+        (function(){
+          var ef = function(){};
+          window.console = window.console || {log:ef,warn:ef,error:ef,dir:ef};
+        }());
+      </script>
+
+      <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-sham.js"></script>
+
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+      <script>html5.addElements('example-application')</script>
+    <![endif]-->
+  </head>
+  <body class="container">
+
+    <div class="jumbotron">
+      <h5>react-mount</h5>
+      <h1>
+        Basic Example
+      </h1>
+
+      <my-component attribute = {attribute}>
+        <p>{paragraph}</p>
+      <!--
+        {/* Html comments can hide unrendered content. */}
+        <ul>
+          {props.list.map(function(value, i){
+              return <li key={i} >{value}</li>;
+          })}
+        </ul>
+      -->
+      </my-component>
+    </div>
+
+    <!-- react-mount dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.1/JSXTransformer.js"></script>
+    <script src="../../react-mount.js"></script>
+    
+    <!-- react component -->
+    <script>
+      var translucentComponent = React.createClass({
+        render: function() {
+          return React.createElement("div", {className:this.props.attribute}, this.props.children);
+        }
+      });
+
+      var props = {
+        paragraph : "Component mounted. React is running.",
+        list : [
+          "Item 1",
+          "Item 2",
+          "Item 3"
+        ],
+        attribute : "myAttribute"
+      }
+      //mount components
+      React.mount({ "my-component":translucentComponent }, { props:props });
+    </script>
+  </body>
+</html>
