@@ -1,17 +1,20 @@
 {
   "name": "react-mount",
+  
   "version": "0.0.1",
+  
   "author": {
     "name" : "Philipp Adrian",
     "email" : "hello@philippadrian.com",
-    "website" : "philippadrian.com"
+    "website" : "http://philippadrian.com"
   },
+
   "description": "Enable React components within html like web components",
+ 
   "repository": {
     "type": "git",
     "url": "https://github.com/greenish/react-mount.git"
   },
-  
 
   "main":"react-mount.js",
 
@@ -26,7 +29,11 @@
     "react": ">=0.13",
     "react-tools" : ">=0.13"
   },
+
   "devDependencies": {
+    "react-mount" : "git://github.com/greenish/react-mount.git#master",
+    "react-bootstrap" : "^0.20.1",
+
     "gulp": "^3.8.11",
     "gulp-jshint": "^1.9.x",
     "gulp-uglify" :"^1.0.x",
@@ -36,6 +43,7 @@
     "vinyl-transform": "^1.0.x",
     "reactify" : "^1.1.0"
   },
+
   "engines": {
     "node": ">=0.10.x"
   },

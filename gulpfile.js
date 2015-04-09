@@ -7,11 +7,22 @@ var transform    = require('vinyl-transform');
 
 ///////////////////////////////////////////////////////////////////////////////
 
-gulp.task("default", ["scripts", "watch"]);
-gulp.task("scripts", scripts);
-gulp.task("watch", watch);
+gulp.task("basic-precompiled", basicPrecompiled);
+gulp.task("default", ["scripts"]);
+gulp.task("react-bootstrap-browserify", reactBootstrapBrowserify);
+gulp.task("scripts", ["basic-precompiled", "react-bootstrap-browserify"]);
 
 ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+function basicPrecompiled(){
+  gulp.src("./examples/basic-precompiled/example.jsx")
+    .pipe(browserify())
+    .pipe(rename("compiled.js"))
+    .pipe(gulp.dest("./examples/basic-precompiled"));
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 function browserify(){
@@ -23,22 +34,10 @@ function browserify(){
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function scripts(){
-  gulp.src("./test/**/app.jsx")
+function reactBootstrapBrowserify(){
+  gulp.src("./examples/react-bootstrap-browserify/app.js")
     .pipe(browserify())
-    .pipe(rename("bundle.js"))
-    // .pipe(rename(function(path){
-    //   console.log(path);
-    //   path.dirname+="/../";
-    //   path.basename="bundle";
-    //   path.extname=".js";
-    // }))
-    .pipe(gulp.dest("./test"));
+    .pipe(uglify())
+    .pipe(rename("browserified.js"))
+    .pipe(gulp.dest("./examples/react-bootstrap-browserify"));
 }
-
-///////////////////////////////////////////////////////////////////////////////
-
-function watch(){
-  gulp.watch(["./test/**/*.jsx", "./react-mount.js"], ['scripts']);
-}
-
