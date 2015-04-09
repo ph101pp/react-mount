@@ -132,6 +132,9 @@ function mountTag(tag, tags, opts) {
 
   // Render component into wrapper.
   React.render(eval(component), wrapper);
+
+  // Remove wrapper.
+  wrapper.outerHTML = wrapper.innerHTML;
 } 
 
 ///////////////////////////////////////////////////////////////////////////////
