@@ -38,33 +38,25 @@ Vanilla:
 	<!-- Dependencies -->
 	<script src="react.js"></script>
 	<script src="JSXTransformer.js"></script>
-	
-	<!-- React component -->
+	<script src="react-mount.js"></script>
+
 	<script>
-	    var ReactComponent = React.createClass({
-	      render: function() {
-	        return (
-	        	<i>React is running.</i>
-	        );
-	      }
-	    });
-	</script>
- 	
-	<!-- Mount component -->
-	<script>
-		// Wait for JSXTransform: Not necessary with precompiled components
-		window.addEventListener( "DOMContentLoaded", function(){ 
-			
-			React.mount({
-				"react-component" : ReactComponent
-			});
+		// React component
+		var ReactComponent = React.createClass({
+			render: function() {
+				return React.createElement("i", null, "Component mounted. React is running.")
+			}
+		});
 		
+		// Mount component
+		React.mount({
+			"react-component" : ReactComponent
 		});
 	</script>
 </body>
 ```
 #####Output
-_React is running._
+_Component mounted. React is running._
 
 ##Tag Content
 Content of custom tags can be written in Html or JSX.
@@ -102,7 +94,8 @@ mount({
 });
 ```
 #####Output
-_React is running._
+_Component mounted. React is running._
+
 ##Expressions and Properties
 `{expressions}` can be used within a tag and are executed properly.
 Properties to be used within expressions can be passed as optional last parameter to the `mount` function:
@@ -111,29 +104,47 @@ React.mount({
 	"translucent-component" : ReactComponent
 },
 {
-	"key" : "value"
+	paragraph : "Component mounted. React is running.",
+	list : [
+		  "Item 1",
+		  "Item 2",
+		  "Item 3"
+	],
+	attribute : "myAttribute"
 });
 ```
 These properties are avaliable within expressions as `props.key`:
 ```js
-{props.key} // "value"
-{props.key === "value" ? "Yes" : "No"} // Yes
+{props.paragraph} // "Component mounted. React is running."
+{props.list.length <= 3 ? "Yes" : "No"} // Yes
 
 // shortcut for simple reference
-{key} 	// "value"
+{paragraph} 	// "Component mounted. React is running."
 
 ```
 ```html
-<translucent-component property={props.key}>
-	<i>{key}</i>
-	<b>{props.key === "value" ? "Yes" : "No"}</b>
+
+<translucent-component attribute={props.attribute}>
+	<p>{paragraph}</p>
+	<p>Less than four list items? </b>{props.key === "value" ? "Yes" : "No"}</b></p>
+	<ul>
+          {props.list.map(function(value, i){
+              return <li key={i} >{value}</li>;
+          })}
+        </ul>
 </translucent-component>
 ```
 Within react component:<br>
-`this.props.property === "value"`<br>
-`this.props.children` contains `<p>value</p>` and `<p>Yes</p>`.
+`this.props.attribute === "myAttribute"`<br>
+`this.props.children` contains `<p>...</p>`, `<p>...</p>` and `<ul>...</ul>`.
 #####Output
-_value_ __Yes__
+Component mounted. React is running.
+
+Less than four list items? __Yes__
+
+- Item 1
+- Item 2
+- Item 3
 
 
 ##HTML Comments
