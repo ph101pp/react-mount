@@ -1,4 +1,4 @@
-#react-mount
+# react-mount
 Use custom tags to place react components directly in html.
 
 - [Install](#install)
@@ -12,16 +12,16 @@ Use custom tags to place react components directly in html.
 - [License](#license)
 
 
-##Install
+## Install
 
-#####Download
+##### Download
 From Github or [npm](https://www.npmjs.org/package/react-mount) or
 
 ```sh
 $ npm install --save react-mount
 ```
 
-#####Include
+##### Include
 With AMD or Browserify:
 ```js
 var mount = require("react-mount");
@@ -32,7 +32,7 @@ Vanilla:
 ```
 
 
-##Basic Usage
+## Basic Usage
 ```html
 <body>
 	<react-component />
@@ -57,10 +57,10 @@ Vanilla:
 	</script>
 </body>
 ```
-#####Output
+##### Output
 _Component mounted. React is running._
 
-##Tag Content
+## Tag Content
 Content of custom tags can be written in Html or JSX.
 ```html
 <translucent-component>
@@ -79,10 +79,10 @@ var translucentComponent = React.createClass({
 	}
 });
 ```
-#####Output
+##### Output
 HTML IS TRANSFORMED TO __JSX__ FOR YOU.</u>
 
-##Nested Components
+## Nested Components
 Custom component tags can be nested as long as all used components are properly mounted:
 ```html
 <translucent-component>
@@ -95,10 +95,10 @@ mount({
 	"translucent-component"	:	TranslucentComponent
 });
 ```
-#####Output
+##### Output
 _Component mounted. React is running._
 
-##Expressions and Properties
+## Expressions and Properties
 `{expressions}` can be used within a tag and are executed properly.
 Properties to be used within expressions can be passed as optional last parameter to the `mount` function:
 ```js
@@ -139,7 +139,7 @@ These properties are avaliable within expressions as `props.key`:
 Within react component:<br>
 `this.props.attribute === "myAttribute"`<br>
 `this.props.children` contains `<p>...</p>`, `<p>...</p>` and `<ul>...</ul>`.
-#####Output
+##### Output
 Component mounted. React is running.
 
 Less than four list items? __Yes__
@@ -148,9 +148,9 @@ Less than four list items? __Yes__
 - Item 2
 - Item 3
 
-##Case-Sensitive Attributes
+## Case-Sensitive Attributes
 
-##HTML Comments
+## HTML Comments
 Html comments do not affect the output of the rendering in any way.<br>
 They can be used to mask unrendered content before react kicks in.
 ```html
@@ -161,16 +161,16 @@ They can be used to mask unrendered content before react kicks in.
 </translucent-component>
 ```
 `this.props.children` still contains `<i>value</i>`.
-#####Output
+##### Output
 _value_
 
 __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 
-##API
+## API
 
 ### `mount(      tags      [, opts]      );`
 
-#####tags `required`
+##### tags `required`
 > _Type_ `object`
 > 
 > Object with _tags_ and their corresponding _components_ to be mounted.
@@ -188,7 +188,7 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 >
 > __Tipp:__ Lower case tag names containing at least one dash are/will be valid html. See: http://w3c.github.io/webcomponents/spec/custom/#concepts
 
-#####opts `optional`
+##### opts `optional`
 > _Type_ `object`
 >
 > Options and parameter for `react-mount`:
@@ -201,13 +201,13 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 > }
 > ```
 >
-> ######context
+> ###### context
 > > _Type_ `HTMLElement` <br>
 > > _Default_ `document.body`
 > > 
 > > Only tags within this element will be mounted.
 > 
-> ######props
+> ###### props
 > > _Type_ `object`
 > > 
 > > `key:value` pairs of Properties.<br>
@@ -215,14 +215,14 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 > >
 > > See: [Expressions and Properties](#expressions-and-properties)
 
-> ######preserveAttributes
+> ###### preserveAttributes
 > > _Type_ `array`
 > > 
 > > Array of case-sensitive attribute names to preserve capitatization.
 > >
 > > See: [Case-Sensitive Attributes](#case-sensitive-attributes)
 
-##License
+## License
 
 [The MIT License (MIT)](http://opensource.org/licenses/MIT)
 
