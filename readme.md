@@ -2,10 +2,11 @@
 Use custom tags to place react components directly in html.
 
 - [Install](#install)
-- [Usage](#usage)
+- [Basic Usage](#basic-usage)
 - [Tag Content](#tag-content)
 - [Nested Components](#nested-components)
 - [Expressions and Properties](#expressions-and-properties)
+- [Case-Sensitive Attributes](#case-sensitive-attributes)
 - [Html Comments](#html-comments)
 - [API: mount(…)](#api)
 
@@ -30,7 +31,7 @@ Vanilla:
 ```
 
 
-##Usage
+##Basic Usage
 ```html
 <body>
 	<react-component />
@@ -126,12 +127,12 @@ These properties are avaliable within expressions as `props.key`:
 
 <translucent-component attribute={props.attribute}>
 	<p>{paragraph}</p>
-	<p>Less than four list items? </b>{props.key === "value" ? "Yes" : "No"}</b></p>
+	<p>Less than four list items? </b>{props.list.length <= 3 ? "Yes" : "No"}</b></p>
 	<ul>
-          {props.list.map(function(value, i){
-              return <li key={i} >{value}</li>;
-          })}
-        </ul>
+		{props.list.map(function(value, i){
+			return <li key={i} >{value}</li>;
+		})}
+	</ul>
 </translucent-component>
 ```
 Within react component:<br>
@@ -146,6 +147,7 @@ Less than four list items? __Yes__
 - Item 2
 - Item 3
 
+##Case-Sensitive Attributes
 
 ##HTML Comments
 Html comments do not affect the output of the rendering in any way.<br>
@@ -153,11 +155,11 @@ They can be used to mask unrendered content before react kicks in.
 ```html
 <translucent-component>
 	<!--
-		<i>{key}</i>
+		<i>{paragraph}</i>
 	-->
 </translucent-component>
 ```
-`this.props.children` still contains `<p>value</p>`.
+`this.props.children` still contains `<i>value</i>`.
 #####Output
 _value_
 
@@ -165,14 +167,7 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 
 ##API
 
-### `mount(      [context,]      tags      [, props]      );`
-
-#####context `optional`
-> _Type_ `HTMLElement` <br>
-> _Default_ `document.body`
-> 
-> Only tags within this element will be mounted.
-
+### `mount(      tags      [, opts]      );`
 
 #####tags `required`
 > _Type_ `object`
@@ -192,28 +187,36 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 >
 > __Tipp:__ Lower case tag names containing at least one dash are/will be valid html. See: http://w3c.github.io/webcomponents/spec/custom/#concepts
 
-#####props `optional`
+#####opts `optional`
 > _Type_ `object`
-> 
-> `key:value` pairs of Properties:
+>
+> Options and parameter for `react-mount`:
+>
 > ```js
 > {
-> 	"status"	: 	"React is running.",
-> 	"flag"		: 	true
-> 	...
-> 	[key]		: 	[value]
+> 	"context"				: 	[HTMLElement],
+> 	"props"					: 	{...}
+> 	"preserveAttributes"	: 	[...]
 > }
 > ```
+>
+> ######context
+> > _Type_ `HTMLElement` <br>
+> > _Default_ `document.body`
+> > 
+> > Only tags within this element will be mounted.
 > 
-> Properties can be used in `{expressions}` within the mounted tags:
-> ```js
-> {props.key}
-> {props.status} 				// React is running.
-> {props.flag ? "Yes" : "No"}	// Yes
-> 
-> // shortcut for simple reference
-> {key} 	// React is running.
-> {flag}	// true
-> 
-> ```
-> See also: [Expressions and Properties](#expressions-and-properties)
+> ######props
+> > _Type_ `object`
+> > 
+> > `key:value` pairs of Properties.<br>
+> > Properties can be used in `{expressions}` within the mounted tags.
+> >
+> > See: [Expressions and Properties](#expressions-and-properties)
+
+> ######preserveAttributes
+> > _Type_ `array`
+> > 
+> > Array of case-sensitive attribute names to preserve capitatization.
+> >
+> > See: [Case-Sensitive Attributes](#case-sensitive-attributes)
