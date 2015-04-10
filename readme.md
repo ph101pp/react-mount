@@ -15,7 +15,7 @@ Use custom tags to place react components directly in html.
 ## Install
 
 ##### Download
-From Github or [npm](https://www.npmjs.org/package/react-mount) or
+From Github or [NPM](https://www.npmjs.org/package/react-mount) or
 
 ```sh
 $ npm install --save react-mount
@@ -26,9 +26,12 @@ With AMD or Browserify:
 ```js
 var mount = require("react-mount");
 ```
-Vanilla:
+Vanilla JS:
 ```html
 <script src="path/to/file/react-mount.js"></script>
+<script>
+	var mount = React.mount;
+</script>
 ```
 
 
