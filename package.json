@@ -1,7 +1,7 @@
 {
   "name": "react-mount",
   
-  "version": "0.0.2",
+  "version": "0.1.0",
   
   "author": {
     "name" : "Philipp Adrian",
@@ -12,7 +12,7 @@
   "description": "Use custom tags to place react components directly in html.",
   
   "license" :"MIT",
-  
+
   "repository": {
     "type": "git",
     "url": "https://github.com/greenish/react-mount.git"
