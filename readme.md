@@ -15,10 +15,14 @@ Use custom tags to place react components directly in html.
 ## Install
 
 ##### Download
-From Github or [NPM](https://www.npmjs.org/package/react-mount) or
+From Github, [NPM](https://www.npmjs.org/package/react-mount):
 
 ```sh
 $ npm install --save react-mount
+```
+ or [Bower](http://bower.io/search/?q=react-mount):
+```sh
+$ bower install react-mount
 ```
 
 ##### Include
