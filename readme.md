@@ -149,6 +149,34 @@ Less than four list items? __Yes__
 - Item 3
 
 ## Case-Sensitive Attributes
+Html is case insensitiv and transforms everything outside of strings to lowercase. React `props` however are case sensitive and therefore some components require correctly capitalized attributes.
+
+There are two ways to preserve the capitalization of attributes:
+
+__A) Per component__
+```js
+mount({
+	"react-component" : ["camelCaseAttribute", "anotherAttribute", ReactComponent]
+}
+```
+__B) For all components__
+```js
+mount({
+	"react-component" : ReactComponent
+}, {
+	preserveAttributes : ["camelCaseAttribute", "anotherAttribute"]
+});
+```
+In both cases you can now savely use the preserved attributes:
+```html
+<react-component camelCaseAttribute="preserved attribute" notPreservedAttribute="not preserved" />
+```
+Within react component:<br>
+`this.props.camelCaseAttribute === "preserved attribute"`<br>
+__but__<br>
+`this.props.notPreservedAttribute === undefined;` <br>
+`this.props.notpreservedattribute === "not preserved"`
+
 
 ## HTML Comments
 Html comments do not affect the output of the rendering in any way.<br>
@@ -171,7 +199,7 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 ### `mount(      tags      [, opts]      );`
 
 ##### tags `required`
-> _Type_ `object`
+> _Type_ `Object`
 > 
 > Object with _tags_ and their corresponding _components_ to be mounted.
 > 
@@ -179,17 +207,22 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 > {
 > 	"tag-name"	: 	ReactComponent,
 > 	"tag-Name"	: 	ReactComponent,
-> 	"TAG-NAME"	: 	ReactComponent,
+>	...
+> 	"TAG-NAME"	: 	["camelCaseAttribute", ReactComponent],
 > 	...
-> 	[tag]		: 	[component]
+> 	[tag]		: 	[component | Array]
 > }
 > ```
 > Tag names are __case insensitive__. All the above definitions would do the same / the first component would be mounted to all of the tags.
 >
-> __Tipp:__ Lower case tag names containing at least one dash are/will be valid html. See: http://w3c.github.io/webcomponents/spec/custom/#concepts
+> __Optional:__ Instead of a React component, an array with case-sensitive attributes can be defined. The last item of the array is the react component to be mounted. <br>
+> See: [Case-Sensitive Attributes](#case-sensitive-attributes)
+>
+> __Tipp:__ Lower case tag names containing at least one dash are/will be valid html. <br>
+> See: http://w3c.github.io/webcomponents/spec/custom/#concepts
 
 ##### opts `optional`
-> _Type_ `object`
+> _Type_ `Object`
 >
 > Options and parameter for `react-mount`:
 >
@@ -208,7 +241,7 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 > > Only tags within this element will be mounted.
 > 
 > ###### props
-> > _Type_ `object`
+> > _Type_ `Object`
 > > 
 > > `key:value` pairs of Properties.<br>
 > > Properties can be used in `{expressions}` within the mounted tags.
@@ -216,9 +249,9 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 > > See: [Expressions and Properties](#expressions-and-properties)
 
 > ###### preserveAttributes
-> > _Type_ `array`
+> > _Type_ `Array`
 > > 
-> > Array of case-sensitive attribute names to preserve capitatization.
+> > Array of case-sensitive attributes to preserve capitatization.
 > >
 > > See: [Case-Sensitive Attributes](#case-sensitive-attributes)
 
