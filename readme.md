@@ -107,19 +107,21 @@ _Component mounted. React is running._
 
 ## Expressions and Properties
 `{expressions}` can be used within a tag and are executed properly.
-Properties to be used within expressions can be passed as optional last parameter to the `mount` function:
+Properties to be used within expressions can be passed within the `opts` object to the `mount` function:
 ```js
 React.mount({
 	"translucent-component" : ReactComponent
 },
 {
-	paragraph : "Component mounted. React is running.",
-	list : [
-		  "Item 1",
-		  "Item 2",
-		  "Item 3"
-	],
-	attribute : "myAttribute"
+	props : {
+		paragraph : "Component mounted. React is running.",
+		list : [
+			  "Item 1",
+			  "Item 2",
+			  "Item 3"
+		],
+		attribute : "myAttribute"
+	}
 });
 ```
 These properties are avaliable within expressions as `props.key`:
