@@ -1,7 +1,7 @@
 {
   "name": "react-mount",
   
-  "version": "0.0.1",
+  "version": "0.0.2",
   
   "author": {
     "name" : "Philipp Adrian",
@@ -31,8 +31,7 @@
   ],
 
   "dependencies": {
-    "react": ">=0.13",
-    "react-tools" : ">=0.13"
-  },
+    "react": ">=0.13"
+  }
 
 }
