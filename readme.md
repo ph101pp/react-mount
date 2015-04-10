@@ -118,7 +118,7 @@ React.mount({
 These properties are avaliable within expressions as `props.key`:
 ```js
 {props.paragraph} // "Component mounted. React is running."
-{props.list.length <= 3 ? "Yes" : "No"} // Yes
+{props.list.length <= 3 ? "Yes!" : "No!"} // Yes!
 
 // shortcut for simple reference
 {paragraph} 	// "Component mounted. React is running."
@@ -128,7 +128,7 @@ These properties are avaliable within expressions as `props.key`:
 
 <translucent-component attribute={props.attribute}>
 	<p>{paragraph}</p>
-	<p>Less than four list items? </b>{props.list.length <= 3 ? "Yes" : "No"}</b></p>
+	<p>Less than four list items? </b>{props.list.length <= 3 ? "Yes!" : "No!"}</b></p>
 	<ul>
 		{props.list.map(function(value, i){
 			return <li key={i} >{value}</li>;
@@ -142,7 +142,7 @@ Within react component:<br>
 ##### Output
 Component mounted. React is running.
 
-Less than four list items? __Yes__
+Less than four list items? __Yes!__
 
 - Item 1
 - Item 2
@@ -157,7 +157,7 @@ __A) Per component__
 ```js
 mount({
 	"react-component" : ["camelCaseAttribute", "anotherAttribute", ReactComponent]
-}
+});
 ```
 __B) For all components__
 ```js
@@ -174,7 +174,7 @@ In both cases you can now savely use the preserved attributes:
 Within react component:<br>
 `this.props.camelCaseAttribute === "preserved attribute"`<br>
 __but__<br>
-`this.props.notPreservedAttribute === undefined;` <br>
+`this.props.notPreservedAttribute === undefined` <br>
 `this.props.notpreservedattribute === "not preserved"`
 
 
