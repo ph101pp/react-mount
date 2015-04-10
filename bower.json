@@ -1,0 +1,38 @@
+{
+  "name": "react-mount",
+  
+  "version": "0.0.1",
+  
+  "author": {
+    "name" : "Philipp Adrian",
+    "email" : "hello@philippadrian.com",
+    "website" : "http://philippadrian.com"
+  },
+
+  "description": "Use custom tags to place react components directly in html.",
+ 
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greenish/react-mount.git"
+  },
+
+  "main":"react-mount.js",
+
+  "keywords": [
+    "react",
+    "reactjs",
+    "html",
+    "client",
+    "frontend",
+    "mount",
+    "custom",
+    "tags",
+    "webcomponents"
+  ],
+
+  "dependencies": {
+    "react": ">=0.13",
+    "react-tools" : ">=0.13"
+  },
+
+}
