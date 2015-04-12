@@ -19,13 +19,110 @@ var preserveReactAttributes = ["onBeforeInput", "onBeforeInputCapture", "onCompo
 ///////////////////////////////////////////////////////////////////////////////
 // Export / Attach / Public
 
-module.exports = mountTags;
+module.exports = mount;
+
 if(typeof window.React === "object") 
-  window.React.mount = mountTags;
+  window.React.mount = mount;
 if(typeof define === "function" && define.amd) 
-  define(function(){return mountTags});
+  define(function(){return mount});
 
 ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+function getNodes(tags, context) {
+  var keys = objectKeys(tags);
+  var returns = [];
+
+  // keys to uppercase to compare to nodeName
+  for(var i=0; i<keys.length; i++) keys[i]=keys[i].toUpperCase();
+
+  // if context is tag
+  if(keys.indexOf(context.nodeName) >= 0) {
+    return [context];
+  };
+
+  //Mount all top-level child tags within context
+  var nodes, el, mount, n;
+  for(var i=0; i<keys.length; i++) {
+    nodes = context.getElementsByTagName(keys[i]);
+    for(n=0; n<nodes.length; n++) {
+      el = nodes[n];
+      mount = true;
+      while(el = el.parentNode) {
+        if(keys.indexOf(el.nodeName) >= 0) {
+          mount = false;
+          break;
+        }
+        if(el === context) break;
+      }
+      if(mount) returns.push(nodes[n]);
+    }
+  }  
+  return returns;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+function htmlToComponent(str, tags, opts) {
+  var keys = objectKeys(tags);
+  var props = opts.props || {};
+  var preserveAttributes = opts.preserveAttributes || [];
+  var tagAttributes = [];
+  var reactTags={};
+  var reactKeys=[];
+  var key;
+  for(var i = 0; i<keys.length; i++) {
+    key = "AB"+Math.random().toString(36).substring(2);
+    if(typeof tags[keys[i]] !== "function") {
+      if(typeof tags[keys[i]].slice !== "function") continue;
+      tagAttributes = tags[keys[i]].slice(0,-1);
+      reactTags[key] = tags[keys[i]].slice(-1)[0];
+    }
+    else
+      reactTags[key] = tags[keys[i]];
+
+    reactKeys.push(key);
+
+    str = str
+      .replace(new RegExp("(<\/?)"+keys[i]+"(?:[^>\"']|\".*\"|'.*')*>", "ig"), function(match, start){
+        // find/replace spell-save attributes within tag to restore capitals
+        if(start !== "</")
+          for(var a=0; a<tagAttributes.length; a++)
+            match = replaceAttribute(match, tagAttributes[a], tagAttributes[a]);
+
+        // replace key
+        return match
+          .replace(new RegExp(start+keys[i]+"(\\s|>)", "i"), start+key+"$1");
+      });
+  }
+
+  // remove/disable html comments
+  str = str.replace(/<!--|-->/g,"")
+
+  // find/replace global spell-save attributes to restore capitals
+  var attributes = preserveReactAttributes.concat(preserveAttributes);
+  for(var i=0; i<attributes.length; i++) 
+    str = replaceAttribute(str, attributes[i], attributes[i]);
+ 
+  var jsx = htmlToJsx(str);
+
+  // replace props variables {key} with corrected variables {props['key']}
+  for(var key in props) {
+    jsx = jsx
+      .replace(new RegExp("(\{"+key+"\})","g"),"{props['"+key+"']}");
+  }
+  
+  var component = ReactTransform(jsx).code;
+  
+  // replace component variables (ComponentName) with corrected variables (tags['ComponentName'])
+  for(var i=0; i<reactKeys.length; i++) {
+    component = component
+      .replace(new RegExp(reactKeys[i],"g"), "reactTags['"+reactKeys[i]+"']"); 
+  }
+
+  return eval(component);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
 
@@ -77,105 +174,28 @@ function htmlToJsx(str){
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function mountTag(tag, tags, opts) {
-  var str = tag.outerHTML;
-  var keys = objectKeys(tags);
-  var props = opts.props || {};
-  var preserveAttributes = opts.preserveAttributes || [];
-
-  // transform tagnames to random strings starting with "AB" (Aj4awwubx1or);
-  var key, reactTags = {}, reactKeys=[], tagAttributes = [];
-  for(var i = 0; i<keys.length; i++) {
-    key = "AB"+Math.random().toString(36).substring(2);
-    if(typeof tags[keys[i]] !== "function") {
-      if(typeof tags[keys[i]].slice !== "function") continue;
-      reactTags[key] = tags[keys[i]].slice(-1)[0];
-      tagAttributes = tags[keys[i]].slice(0,-1);
-    }
-    else reactTags[key] = tags[keys[i]];
-
-    reactKeys.push(key);
-    str = str
-      .replace(new RegExp("(<\/?)"+keys[i]+"(?:[^>\"']|\".*\"|'.*')*>", "ig"), function(match, start){
-        // find/replace spell-save attributes within tag to restore capitals
-        if(start !== "</")
-          for(var a=0; a<tagAttributes.length; a++)
-            match = replaceAttribute(match, tagAttributes[a], tagAttributes[a]);
-
-        // replace key
-        return match
-          .replace(new RegExp(start+keys[i]+"(\\s|>)", "i"), start+key+"$1");
-      });
-  }
-
-  // remove/disable html comments
-  str = str.replace(/<!--|-->/g,"")
-
-  // find/replace global spell-save attributes to restore capitals
-  var attributes = preserveReactAttributes.concat(preserveAttributes);
-  for(var i=0; i<attributes.length; i++) 
-    str = replaceAttribute(str, attributes[i], attributes[i]);
-
-  var jsx = htmlToJsx(str);
-  
-  // replace props variables {key} with corrected variables {props['key']}
-  for(key in props) {
-    jsx = jsx
-      .replace(new RegExp("(\{"+key+"\})","g"),"{props['"+key+"']}");
-  }
-  
-  var component = ReactTransform(jsx).code;
-  
-  // replace component variables (ComponentName) with corrected variables (reactTags['ComponentName'])
-  for(var i = 0; i<reactKeys.length; i++) {
-    component = component
-      .replace(new RegExp(reactKeys[i],"g"), "reactTags['"+reactKeys[i]+"']"); 
-  }
-  
-  // create wrapper to mount into
-  var wrapper = document.createElement('div');
-  
-  // Replace tag with wrapper
-  tag.parentNode.replaceChild(wrapper, tag);
-
-  // Render component into wrapper.
-  React.render(eval(component), wrapper);
-} 
-
-///////////////////////////////////////////////////////////////////////////////
-
-function mountTags(tags, opts){
+function mount(tags, opts){
   opts = opts || {};
-  var context = opts.context || document.body;
-  var keys = objectKeys(tags);
+  var component, wrapper;
 
-  // keys to uppercase to compare to nodeName
-  for(var i=0; i<keys.length; i++) keys[i]=keys[i].toUpperCase();
+  // Get HTML nodes that need to be mounted.
+  var nodes = getNodes(tags, opts.context || document.body);
+  
+  for(var i=0; i<nodes.length; i++) {
 
-  // if context is tag
-  if(keys.indexOf(context.nodeName) >= 0) {
-    mountTag(context, tags, opts);
-    return;
-  };
+    // create component to be mounted
+    component = htmlToComponent(nodes[i].outerHTML, tags, opts);
 
-  //Mount all top-level child tags within context
-  var nodes, el, mount, n;
-  for(var i=0; i<keys.length; i++) {
-    nodes = context.getElementsByTagName(keys[i]);
-    for(n=0; n<nodes.length; n++) {
-      el = nodes[n];
-      mount = true;
-      while(el = el.parentNode) {
-        if(keys.indexOf(el.nodeName) >= 0) {
-          mount = false;
-          break;
-        }
-        if(el === context) break;
-      }
-      if(mount) mountTag(nodes[n], tags, opts);
-    }
-  }  
-}
+    // create wrapper to mount into
+    wrapper = document.createElement('div');
+    
+    // Replace tag with wrapper
+    nodes[i].parentNode.replaceChild(wrapper, nodes[i]);
+
+    // Render component into wrapper.
+    React.render(component, wrapper);
+  }
+} 
 
 ///////////////////////////////////////////////////////////////////////////////
 
