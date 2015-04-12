@@ -39,6 +39,8 @@
 
   "devDependencies": {
     "react-mount" : "git://github.com/greenish/react-mount.git#master",
+    "react": "^0.13.1",
+    "react-tools" : "^0.13.1",
     "react-bootstrap" : "^0.20.1",
 
     "gulp": "^3.8.11",
