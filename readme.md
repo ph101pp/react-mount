@@ -1,5 +1,5 @@
 # react-mount
-Use custom tags to place react components directly in html.
+React goes web component. Use custom tags to place react components directly in html.
 
 [![npm version](https://badge.fury.io/js/react-mount.svg)](http://badge.fury.io/js/react-mount)
 [![Bower version](https://badge.fury.io/bo/react-mount.svg)](http://badge.fury.io/bo/react-mount)
