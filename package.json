@@ -9,7 +9,7 @@
     "website" : "http://philippadrian.com"
   },
 
-  "description": "Use custom tags to place react components directly in html.",
+  "description": "React goes web component – Use custom tags to place react components directly in html.",
   
   "license" :"MIT",
 
@@ -25,11 +25,11 @@
     "reactjs",
     "html",
     "client",
-    "frontend",
+    "front end",
     "mount",
-    "custom",
-    "tags",
-    "webcomponents"
+    "component",
+    "custom tag",
+    "web component"
   ],
 
   "peerDependencies": {
@@ -43,10 +43,12 @@
     "react-tools" : "^0.13.1",
     "react-bootstrap" : "^0.20.1",
 
-    "gulp": "^3.8.11",
-    "gulp-jshint": "^1.9.x",
-    "gulp-uglify" :"^1.0.x",
-    "gulp-rename" : "^1.2.x",
+    "gulp"        : "^3.8.11",
+    "gulp-jshint" : "^1.9.x",
+    "gulp-uglify" : "^1.0.x",
+    "gulp-rename" : "^1.2.2",
+    "gulp-git"    : "^1.2.1",
+    "gulp-bump"   : "^0.3.0",
 
     "browserify": "^8.0.x",
     "vinyl-transform": "^1.0.x",
@@ -61,7 +63,7 @@
 
   "browserify": {
     "transform": [
-      [ "reactify"]
+      ["reactify"]
     ]
   }
 }

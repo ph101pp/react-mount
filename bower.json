@@ -9,7 +9,7 @@
     "website" : "http://philippadrian.com"
   },
 
-  "description": "Use custom tags to place react components directly in html.",
+  "description": "React goes web component – Use custom tags to place react components directly in html.",
  
   "repository": {
     "type": "git",
@@ -23,11 +23,11 @@
     "reactjs",
     "html",
     "client",
-    "frontend",
+    "front end",
     "mount",
-    "custom",
-    "tags",
-    "webcomponents"
+    "component",
+    "custom tag",
+    "web component"
   ],
 
   "dependencies": {
