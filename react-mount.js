@@ -127,9 +127,6 @@ function htmlToComponent(str, tags, opts) {
 // html to jsx (More info: https://facebook.github.io/react/docs/tags-and-attributes.html)
 
 function htmlToJsx(str){
-  // // remove html comments.. doesn't work in safari.. wtf
-  // str = str
-  //   .replace(/<!--((?:\s|.)*)-->/g,"")
 
   // for attribute to htmlFor
   str = replaceAttribute(str, "for", "htmlFor");
@@ -186,11 +183,13 @@ function mount(tags, opts){
     // create component to be mounted
     component = htmlToComponent(nodes[i].outerHTML, tags, opts);
 
-    // wrapper to mount into
+    // get wrapper to mount into
     wrapper = typeof opts.wrapper === "object" && typeof opts.wrapper.cloneNode === "function"?
       opts.wrapper.cloneNode(false):
       document.createElement('div');
-      
+
+    wrapper.className += wrapper.className ? " react-mount":"react-mount";
+
     // Replace tag with wrapper
     nodes[i].parentNode.replaceChild(wrapper, nodes[i]);
 
