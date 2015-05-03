@@ -64,9 +64,18 @@
         ],
         attribute : "myAttribute"
       };
+
+      // Define custom wrapper to mount components into.
+      var wrapper=document.createElement("section");
+      wrapper.setAttribute("class", "custom-wrapper");
       
       //mount components
-      React.mount({ "my-component":translucentComponent }, { props:props });
+      React.mount({ 
+        "my-component":translucentComponent 
+      }, { 
+        props:props,
+        wrapper : wrapper
+      });
     </script>
   </body>
 </html>
