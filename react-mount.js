@@ -186,9 +186,11 @@ function mount(tags, opts){
     // create component to be mounted
     component = htmlToComponent(nodes[i].outerHTML, tags, opts);
 
-    // create wrapper to mount into
-    wrapper = document.createElement('div');
-    
+    // wrapper to mount into
+    wrapper = typeof opts.wrapper === "object" && typeof opts.wrapper.cloneNode === "function"?
+      opts.wrapper.cloneNode(false):
+      document.createElement('div');
+      
     // Replace tag with wrapper
     nodes[i].parentNode.replaceChild(wrapper, nodes[i]);
 
