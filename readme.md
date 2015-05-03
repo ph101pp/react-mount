@@ -1,5 +1,5 @@
 # react-mount
-React goes web component. Use custom tags to place react components directly in html.
+React goes web component – Use custom tags to place react components directly in html.
 
 [![npm version](https://badge.fury.io/js/react-mount.svg)](http://badge.fury.io/js/react-mount)
 [![Bower version](https://badge.fury.io/bo/react-mount.svg)](http://badge.fury.io/bo/react-mount)
@@ -236,13 +236,14 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 ##### opts `optional`
 > _Type_ `Object`
 >
-> Options and parameter for `react-mount`:
+> Available options for `react-mount`:
 >
 > ```js
 > {
 > 	"context"				: 	[HTMLElement],
-> 	"props"					: 	{...}
-> 	"preserveAttributes"	: 	[...]
+> 	"props"					: 	{...},
+> 	"preserveAttributes"	: 	[...],
+> 	"wrapper"				: 	[HTMLElement]
 > }
 > ```
 >
@@ -259,13 +260,19 @@ __Tipp:__ Use JSX style `{/* comments */}` for actual comments.
 > > Properties can be used in `{expressions}` within the mounted tags.
 > >
 > > See: [Expressions and Properties](#expressions-and-properties)
-
+>
 > ###### preserveAttributes
 > > _Type_ `Array`
 > > 
 > > Array of case-sensitive attributes to preserve capitatization.
 > >
 > > See: [Case-Sensitive Attributes](#case-sensitive-attributes)
+>
+> ###### wrapper
+> > _Type_ `HTMLElement` <br>
+> > _Default_ `document.createElement("div")`
+> > 
+> > Define a custom wrapper to mount react components into.
 
 ## License
 
