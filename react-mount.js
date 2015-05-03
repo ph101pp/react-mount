@@ -37,7 +37,7 @@ function getNodes(tags, context) {
   for(var i=0; i<keys.length; i++) keys[i]=keys[i].toUpperCase();
 
   // if context is tag
-  if(keys.indexOf(context.nodeName) >= 0) {
+  if(keys.indexOf(context.nodeName.toUpperCase()) >= 0) {
     return [context];
   };
 
@@ -49,7 +49,7 @@ function getNodes(tags, context) {
       el = nodes[n];
       mount = true;
       while(el = el.parentNode) {
-        if(keys.indexOf(el.nodeName) >= 0) {
+        if(keys.indexOf(el.nodeName.toUpperCase()) >= 0) {
           mount = false;
           break;
         }
