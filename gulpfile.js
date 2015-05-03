@@ -96,10 +96,9 @@ function tag() {
   var v = 'v' + pkg.version;
   var message = 'Release ' + v;
 
-  return gulp.src('./')
+  return gulp.src(["./package.json", "./bower.json"])
     .pipe(git.commit(message))
     .pipe(git.tag(v, message))
-    .pipe(git.push(remote, branch, '--tags'))
-    .pipe(gulp.dest('./'));
+    .pipe(git.push(remote, branch, {args: '--tags'}))
 }
 
