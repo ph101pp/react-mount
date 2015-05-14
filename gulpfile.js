@@ -99,6 +99,7 @@ function tag() {
   return gulp.src(["./package.json", "./bower.json"])
     .pipe(git.commit(message))
     .pipe(git.tag(v, message))
-    .pipe(git.push(remote, branch, {args: '--tags'}))
+    ;
+    // .pipe(git.push(remote, branch, {args: '--tags'}))
 }
 

@@ -15,7 +15,7 @@
 
   "repository": {
     "type": "git",
-    "url": "https://github.com/greenish/react-mount.git"
+    "url": "https://github.com/greenish/react-mount.git#master"
   },
 
   "main":"react-mount.js",
