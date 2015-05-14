@@ -8,7 +8,6 @@
 "use strict";
 (function(module, require, window, document, undefined){
 
-require = require || requireShim;
 var React = window.React || require("react");
 var ReactTransform = window.JSXTransformer ? 
   window.JSXTransformer.transform : 
@@ -215,10 +214,13 @@ function replaceAttribute(str, search, replace){
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function requireShim(required){
-  throw "react-mount: Error - React and JSXTransformer/react-tools are required for react-mount to work";
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-})(typeof module === "object" ? module : {}, typeof require === "function" ? require : undefined, window, document);
+})(
+typeof module === "object" ? 
+  module : {}, 
+typeof require === "function" ? 
+  require : 
+  function (required){
+    throw "react-mount: Error - React and JSXTransformer/react-tools are required for react-mount to work";
+  },
+window, 
+document);
