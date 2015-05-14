@@ -109,15 +109,17 @@ mount({
 _Component mounted. React is running._
 
 ## Expressions and Properties
-`{expressions}` can be used within a tag and are executed properly.
-Properties to be used within expressions can be passed within the `opts` object to the `mount` function:
+`{expressions}` can be used within a tag and are executed properly.<br>
+Within `{expressions}` properties from the global namespace `window` can be accessed.
+However to keep the global namespace clear, properties can also be defined in the `opts` object passed to the `mount` function:
 ```js
+window.paragraph = "Component mounted. React is running.";
+
 React.mount({
 	"translucent-component" : ReactComponent
 },
 {
 	props : {
-		paragraph : "Component mounted. React is running.",
 		list : [
 			  "Item 1",
 			  "Item 2",
@@ -129,17 +131,18 @@ React.mount({
 ```
 These properties are avaliable within expressions as `props.key`:
 ```js
-{props.paragraph} // "Component mounted. React is running."
+{window.paragraph} // "Component mounted. React is running."
+
 {props.list.length <= 3 ? "Yes!" : "No!"} // Yes!
 
-// shortcut for simple reference
-{paragraph} 	// "Component mounted. React is running."
+// shortcut for simple reference (props. is appended for you)
+{attribute} 	// "myAttribute"
 
 ```
 ```html
 
-<translucent-component attribute={props.attribute}>
-	<p>{paragraph}</p>
+<translucent-component attribute={attribute}>
+	<p>{window.paragraph}</p>
 	<p>Less than four list items? </b>{props.list.length <= 3 ? "Yes!" : "No!"}</b></p>
 	<ul>
 		{props.list.map(function(value, i){
