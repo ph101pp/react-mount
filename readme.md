@@ -182,7 +182,7 @@ mount({
 	preserveAttributes : ["camelCaseAttribute", "anotherAttribute"]
 });
 ```
-In both cases you can now savely use the preserved attributes:
+In both cases you can now safely use the preserved attributes:
 ```html
 <react-component camelCaseAttribute="preserved attribute" notPreservedAttribute="not preserved" />
 ```
