@@ -20,8 +20,8 @@ var preserveReactAttributes = ["onBeforeInput", "onBeforeInputCapture", "onCompo
 
 module.exports = mount;
 
-if(typeof window.React === "object") 
-  window.React.mount = mount;
+if(typeof React === "object")
+  React.mount = mount;
 if(typeof define === "function" && define.amd) 
   define(function(){return mount});
 
